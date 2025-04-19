@@ -10,7 +10,7 @@
       >Log in</a
     >
 
-    } @for (item of userLoggedData.role === 'admin' ? headerItemAdminList :
+    } @for (item of userLoggedData().role === 'admin' ? headerItemAdminList :
     headerItemUserList; track $index) {
     <a
       (click)="redirect(item.url)"

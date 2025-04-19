@@ -32,17 +32,15 @@ export class LogInComponent {
     } else {
       this.userService.logIn(this.form.value).subscribe(
         (res) => {
-          console.log(res);
+          const userData = (res as any).user;
           this.form.reset();
           this.toastService.showToast.set(true);
           this.toastService.toastType.set('toast-success');
           this.toastService.toastMessage.set(
             'Ha iniciado sesión correctamente.'
           );
-          this.userService.isUserLoggedIn.set(true);
           this.route.navigate(['/cost-estimate']);
-
-          localStorage.setItem('token', JSON.stringify(res));
+          this.userService.setUserData(userData);
         },
         (err) => {
           console.log(err);

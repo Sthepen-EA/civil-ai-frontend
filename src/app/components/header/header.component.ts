@@ -17,7 +17,7 @@ export class HeaderComponent {
   toastService = inject(ToastService);
 
   isUserLoggedIn = this.userService.isUserLoggedIn;
-  userLoggedData = initialUser;
+  userLoggedData = this.userService.userData;
 
   headerItemAdminList = [
     { name: 'Estimaciones', url: '/cost-estimate' },
@@ -31,17 +31,7 @@ export class HeaderComponent {
   ];
 
   ngOnInit() {
-    this.checkUserLoggedIn();
-  }
-
-  checkUserLoggedIn() {
     this.userService.checkIfUserLoggedIn();
-
-    if (this.isUserLoggedIn()) {
-      this.userLoggedData = JSON.parse(localStorage.getItem('token')!);
-    } else {
-      this.router.navigate(['/log-in']);
-    }
   }
 
   redirect(url: string) {

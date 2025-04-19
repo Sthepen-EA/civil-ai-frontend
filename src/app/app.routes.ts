@@ -3,7 +3,6 @@ import { CostEstimateComponent } from './pages/cost-estimate/cost-estimate.compo
 import { ChangeRequestComponent } from './pages/change-request/change-request.component';
 import { UserComponent } from './pages/user/user.component';
 import { LogInComponent } from './pages/log-in/log-in.component';
-import { userAuthGuard } from './services/user-auth.guard';
 
 export const routes: Routes = [
   {

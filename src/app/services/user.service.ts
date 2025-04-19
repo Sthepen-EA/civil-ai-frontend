@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment.development';
+import { initialUser } from '../interfaces/User';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +11,7 @@ export class UserService {
 
   api_url = environment.api_url + 'user';
   isUserLoggedIn = signal(false);
+  userData = signal(initialUser);
 
   getUsers() {
     return this.http.get(this.api_url);
@@ -24,6 +26,16 @@ export class UserService {
 
     if (token) {
       this.isUserLoggedIn.set(true);
+      this.userData.set(JSON.parse(token));
+      this.isUserLoggedIn.set(true);
+    } else {
+      this.isUserLoggedIn.set(false);
     }
+  }
+
+  setUserData(data: any) {
+    this.userData.set(data);
+    this.isUserLoggedIn.set(true);
+    localStorage.setItem('token', JSON.stringify(data));
   }
 }
