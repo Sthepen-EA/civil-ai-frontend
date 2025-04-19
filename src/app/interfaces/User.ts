@@ -1,5 +1,5 @@
 export interface IUser {
-  id: string;
+  _id: string;
   name: string;
   email: string;
   phone: string;
@@ -7,3 +7,13 @@ export interface IUser {
   password: string;
   role: string;
 }
+
+export const initialUser: IUser = {
+  _id: '',
+  name: '',
+  email: '',
+  phone: '',
+  state: '',
+  password: '',
+  role: '',
+};

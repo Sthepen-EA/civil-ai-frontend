@@ -3,6 +3,8 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CostEstimateService } from '../../services/cost-estimate.service';
 import { IInputListItem } from '../../interfaces/CostEstimate';
 import { ToastService } from '../../services/toast.service';
+import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cost-estimate-form',
@@ -16,6 +18,7 @@ export class CostEstimateFormComponent {
 
   toastService = inject(ToastService);
   costEstimateService = inject(CostEstimateService);
+  userService = inject(UserService);
 
   form = new FormGroup({
     structureType: new FormControl(''),
