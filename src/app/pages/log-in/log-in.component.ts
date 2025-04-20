@@ -37,7 +37,7 @@ export class LogInComponent {
           this.toastService.showToast.set(true);
           this.toastService.toastType.set('toast-success');
           this.toastService.toastMessage.set(
-            'Ha iniciado sesión correctamente.'
+            `Ha iniciado sesión correctamente como "${userData.role.toUpperCase()}".`
           );
           this.route.navigate(['/cost-estimate']);
           this.userService.setUserData(userData);

@@ -1,7 +1,7 @@
 export interface ICostEstimate {
   id: string;
   input_list: IInputListItem;
-  total_cost: number;
+  total_Cost: number;
 }
 
 export interface IInputListItem {

@@ -2,12 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 import { initialUser } from '../interfaces/User';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   http = inject(HttpClient);
+  router = inject(Router);
 
   api_url = environment.api_url + 'user';
   isUserLoggedIn = signal(false);
@@ -28,6 +30,7 @@ export class UserService {
       this.isUserLoggedIn.set(true);
       this.userData.set(JSON.parse(token));
       this.isUserLoggedIn.set(true);
+      this.router.navigate(['/cost-estimate']);
     } else {
       this.isUserLoggedIn.set(false);
     }

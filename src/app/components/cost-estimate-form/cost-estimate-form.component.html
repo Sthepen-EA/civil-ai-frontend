@@ -1,6 +1,6 @@
 <div class="fixed w-full h-full top-0 left-0 p-10 grid place-items-center">
   <form
-    [formGroup]="form"
+    [formGroup]="itemToUpdate ? editForm : form"
     class="max-w-md w-full mx-auto relative z-1 border-1 border-gray-500 rounded-md p-6 bg-gray-900"
   >
     <select
@@ -41,6 +41,21 @@
         formControlName="{{ item.name }}"
         type="number"
         id="{{ item.name }}"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        required
+      />
+    </div>
+    } @if(itemToUpdate) {
+    <div class="mb-5">
+      <label
+        for="total_Cost"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Costo total</label
+      >
+      <input
+        formControlName="total_Cost"
+        type="number"
+        id="total_Cost"
         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         required
       />

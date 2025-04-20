@@ -59,3 +59,11 @@
     </tbody>
   </table>
 </div>
+
+@if(showForm) {
+<app-cost-estimate-form
+  [itemToUpdate]="itemToUpdate"
+  (showForm)="showForm = $event"
+/>
+
+}

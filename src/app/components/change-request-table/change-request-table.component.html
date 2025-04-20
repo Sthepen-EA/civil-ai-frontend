@@ -38,11 +38,15 @@
           Ver
         </th>
         <th
-          (click)="showCostEstimation(item.new_prediction_object)"
+          (click)="
+            item.request_type === 'Edición'
+              ? showCostEstimation(item.new_prediction_object)
+              : ''
+          "
           scope="row"
           class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white hover:underline cursor-pointer"
         >
-          Ver
+          @if(item.request_type === 'Edición') {Ver} @else { No aplica}
         </th>
         <td class="px-6 py-4">{{ item.status }}</td>
 

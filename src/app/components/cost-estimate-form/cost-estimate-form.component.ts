@@ -1,10 +1,12 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CostEstimateService } from '../../services/cost-estimate.service';
-import { IInputListItem } from '../../interfaces/CostEstimate';
+import { ICostEstimate, IInputListItem } from '../../interfaces/CostEstimate';
 import { ToastService } from '../../services/toast.service';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
+import { ChangeRequestService } from '../../services/change-request.service';
+import { IChangeRequest } from '../../interfaces/ChangeRequest';
 
 @Component({
   selector: 'app-cost-estimate-form',
@@ -14,10 +16,12 @@ import { Router } from '@angular/router';
   styleUrl: './cost-estimate-form.component.css',
 })
 export class CostEstimateFormComponent {
+  @Input() itemToUpdate!: ICostEstimate;
   @Output() showForm = new EventEmitter<boolean>();
 
   toastService = inject(ToastService);
   costEstimateService = inject(CostEstimateService);
+  changeRequestService = inject(ChangeRequestService);
   userService = inject(UserService);
 
   form = new FormGroup({
@@ -28,6 +32,17 @@ export class CostEstimateFormComponent {
     total_Length: new FormControl(0),
     year: new FormControl(0),
   });
+
+  editForm = new FormGroup({
+    structureType: new FormControl(''),
+    abutmentType: new FormControl(''),
+    number_of_Spans: new FormControl(0),
+    total_Width: new FormControl(0),
+    total_Length: new FormControl(0),
+    year: new FormControl(0),
+    total_Cost: new FormControl(0),
+  });
+
   atributos: any[] = [
     {
       name: 'number_of_Spans',
@@ -48,53 +63,53 @@ export class CostEstimateFormComponent {
   ];
 
   structureTypeList: string[] = [
-    'Adjacent box beams',
-    'Adjacent slab beams',
-    'Arch',
-    'Bulb tee',
-    'Channel beam',
-    'Concrete segmental box girder',
-    'Culvert',
-    'Deck arches',
-    'I-beams',
-    'Inverset',
-    'Multi girder curved',
-    'Multi girder straight',
-    'Next beam',
-    'Next beam type d',
-    'Next beam type f',
-    'Precast box curlvert',
-    'Prestressed adjacent box beams',
-    'Prestressed adjacent slab beams',
-    'Prestressed bulb tees',
-    'Prestressed l-beams',
-    'Prestressed spread box beams',
-    'Segmental box girder',
-    'Spread box beams',
-    'Steel multi girder straight',
-    'Steel segmental box girder',
-    'Three sided frame',
-    'Through girder',
-    'Through truss',
-    'Truss',
+    'adjacent box beams',
+    'adjacent slab beams',
+    'arch',
+    'bulb tee',
+    'channel beam',
+    'concrete segmental box girder',
+    'culvert',
+    'deck arches',
+    'i-beams',
+    'inverset',
+    'multi girder curved',
+    'multi girder straight',
+    'next beam',
+    'next beam type d',
+    'next beam type f',
+    'precast box curlvert',
+    'prestressed adjacent box beams',
+    'prestressed adjacent slab beams',
+    'prestressed bulb tees',
+    'prestressed l-beams',
+    'prestressed spread box beams',
+    'segmental box girder',
+    'spread box beams',
+    'steel multi girder straight',
+    'steel segmental box girder',
+    'three sided frame',
+    'through girder',
+    'through truss',
+    'truss',
   ];
 
   abutmentTypeList: string[] = [
-    'Abutmentless',
-    'Cantilever stems',
-    'Culvert',
-    'Existing',
-    'Footing only',
-    'Integral',
-    'Integral & gravity',
-    'Invert slab',
-    'Semi-integral',
-    'Short stem',
-    'Solid cantilever',
-    'Stem',
-    'Stub cantilever',
-    'Stub on msess wall',
-    'Other',
+    'abutmentless',
+    'cantilever stems',
+    'culvert',
+    'existing',
+    'footing only',
+    'integral',
+    'integral & gravity',
+    'invert slab',
+    'semi-integral',
+    'short stem',
+    'solid cantilever',
+    'stem',
+    'stub cantilever',
+    'stub on msess wall',
+    'other',
   ];
 
   // structureTypeList: string[] = [
@@ -147,6 +162,17 @@ export class CostEstimateFormComponent {
   //   'Otro',
   // ];
 
+  ngOnChanges(): void {
+    this.editForm.patchValue({
+      structureType: this.itemToUpdate.input_list.structureType,
+      abutmentType: this.itemToUpdate.input_list.abutmentType,
+      number_of_Spans: this.itemToUpdate.input_list.number_of_Spans,
+      total_Width: this.itemToUpdate.input_list.total_Width,
+      total_Length: this.itemToUpdate.input_list.total_Length,
+      year: this.itemToUpdate.input_list.year,
+      total_Cost: this.itemToUpdate.total_Cost,
+    });
+  }
   closeForm() {
     this.showForm.emit(false);
   }
@@ -158,6 +184,38 @@ export class CostEstimateFormComponent {
       this.toastService.toastMessage.set(
         'Por favor, complete todos los campos.'
       );
+    } else if (this.itemToUpdate) {
+      const { total_Cost, ...inputListWithoutCost } = this.editForm.value;
+      const today = new Date();
+      const formattedDate = today.toISOString().split('T')[0];
+
+      const item: IChangeRequest = {
+        _id: '',
+        prediction_id: this.itemToUpdate.id,
+        request_type: 'Edición',
+        user_id: this.userService.userData()._id,
+        date: formattedDate,
+        original_prediction_object: this.itemToUpdate,
+        new_prediction_object: {
+          input_list: inputListWithoutCost,
+          total_Cost: this.editForm.value.total_Cost,
+        },
+        status: 'Pendiente',
+      };
+
+      this.changeRequestService.createChangeRequest(item).subscribe({
+        next: (res) => {
+          this.toastService.showToast.set(true);
+          this.toastService.toastType.set('toast-success');
+          this.toastService.toastMessage.set(
+            'Solicitud de edición de estimación de costo creada correctamente.'
+          );
+          this.closeForm();
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
     } else {
       this.costEstimateService.createCostEstimation(this.form.value).subscribe(
         (res) => {
