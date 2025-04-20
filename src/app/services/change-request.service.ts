@@ -19,5 +19,7 @@ export class ChangeRequestService {
     return this.http.post(this.api_url + '/create', item);
   }
 
-  constructor() {}
+  updateChangeRequest(item: any) {
+    return this.http.put(this.api_url + '/' + item._id, item);
+  }
 }
