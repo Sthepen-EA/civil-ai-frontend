@@ -23,6 +23,18 @@ export class UserService {
     return this.http.post(environment.api_url + 'login', credentials);
   }
 
+  createUser(user: any) {
+    return this.http.post(this.api_url + '/create', user);
+  }
+
+  updateUser(user: any) {
+    return this.http.put(this.api_url + '/' + user.id, user);
+  }
+
+  deleteUser(id: any) {
+    return this.http.delete(this.api_url + '/' + id);
+  }
+
   checkIfUserLoggedIn() {
     const token = localStorage.getItem('token');
 

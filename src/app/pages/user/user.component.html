@@ -6,9 +6,9 @@
   Agregar
 </button>
 
-<app-user-table [userList]="userList" />
+<app-user-table [userList]="userList" (changeItem)="sendChangeItem($event)" />
 
 @if(showForm) {
-<app-user-form (showForm)="showForm = $event" />
+<app-user-form (showForm)="showForm = $event" [itemToUpdate]="itemToUpdate" />
 
 }

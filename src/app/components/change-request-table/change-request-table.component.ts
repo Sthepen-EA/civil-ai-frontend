@@ -43,7 +43,6 @@ export class ChangeRequestTableComponent {
           this.toastService.toastMessage.set(
             'Solicitud aprobada correctamente.'
           );
-          console.log(res);
         },
         error: (err) => {
           console.log(err);
@@ -74,7 +73,6 @@ export class ChangeRequestTableComponent {
           this.toastService.toastMessage.set(
             'Solicitud rechazada correctamente.'
           );
-          console.log(res);
         },
         error: (err) => {
           console.log(err);

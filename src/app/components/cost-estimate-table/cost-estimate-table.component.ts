@@ -54,7 +54,6 @@ export class CostEstimateTableComponent {
         this.toastService.toastMessage.set(
           'Solicitud de eliminación de estimación de costo creada correctamente.'
         );
-        console.log(res);
       },
       error: (err) => {
         console.log(err);

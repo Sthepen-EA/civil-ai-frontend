@@ -15,6 +15,7 @@ export class UserComponent {
 
   userList = signal<any>([]);
   showForm = false;
+  itemToUpdate!: any;
 
   ngOnInit(): void {
     this.setuserList();
@@ -28,5 +29,10 @@ export class UserComponent {
 
   openForm() {
     this.showForm = !this.showForm;
+  }
+
+  sendChangeItem(item: any) {
+    this.showForm = true;
+    this.itemToUpdate = item;
   }
 }

@@ -23,7 +23,6 @@ export class LogInComponent {
 
   sendForm() {
     if (this.form.invalid) {
-      console.log('error');
       this.toastService.showToast.set(true);
       this.toastService.toastType.set('toast-error');
       this.toastService.toastMessage.set(
