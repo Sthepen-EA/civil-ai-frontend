@@ -14,6 +14,10 @@ export class CostEstimateService {
     return this.http.get(this.api_url);
   }
 
+  getCostEstimationsbyUser(userId: string) {
+    return this.http.get(this.api_url + '-by-user/' + userId);
+  }
+
   createCostEstimation(inputList: any) {
     return this.http.post(this.api_url + '/predict', inputList);
   }

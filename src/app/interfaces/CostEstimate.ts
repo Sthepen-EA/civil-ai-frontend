@@ -1,5 +1,6 @@
 export interface ICostEstimate {
   id: string;
+  user_id?: string;
   input_list: IInputListItem;
   total_Cost: number;
 }

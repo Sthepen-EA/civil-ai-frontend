@@ -15,6 +15,10 @@ export class ChangeRequestService {
     return this.http.get(this.api_url);
   }
 
+  getChangeRequestsbyUser(userId: string) {
+    return this.http.get(this.api_url + '-by-user/' + userId);
+  }
+
   createChangeRequest(item: IChangeRequest) {
     return this.http.post(this.api_url + '/create', item);
   }
