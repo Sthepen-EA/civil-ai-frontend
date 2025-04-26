@@ -16,7 +16,8 @@
         required
         value="{{
           item.name === 'total_Cost'
-            ? itemSelected['total_Cost']
+            ? (itemSelected['total_Cost']
+              | currency : 'USD' : 'symbol' : '1.2-2')
             : itemSelected.input_list[item.name]
         }}"
       />

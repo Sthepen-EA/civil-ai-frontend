@@ -6,7 +6,7 @@ export interface IChangeRequest {
   request_type: string;
   user_id: string;
   date: string;
-  original_prediction_object: ICostEstimate;
+  original_prediction_object: any;
   new_prediction_object: any;
   status: string;
 }

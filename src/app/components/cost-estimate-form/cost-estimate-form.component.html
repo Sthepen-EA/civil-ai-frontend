@@ -1,6 +1,6 @@
 <div class="fixed w-full h-full top-0 left-0 p-10 grid place-items-center">
   <form
-    [formGroup]="itemToUpdate ? editForm : form"
+    [formGroup]="form"
     class="max-w-md w-full mx-auto relative z-1 border-1 border-gray-500 rounded-md p-6 bg-gray-900"
   >
     <select
@@ -45,21 +45,6 @@
         required
       />
     </div>
-    } @if(itemToUpdate) {
-    <div class="mb-5">
-      <label
-        for="total_Cost"
-        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-        >Costo total</label
-      >
-      <input
-        formControlName="total_Cost"
-        type="number"
-        id="total_Cost"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        required
-      />
-    </div>
     }
 
     <div class="w-full flex flex-row justify-center gap-5">
@@ -68,8 +53,18 @@
         type="submit"
         class="cursor-pointer text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
       >
-        @if(itemToUpdate) {Actualizar} @else {Crear}
+        @if(itemToUpdate) {Actualizar} @else {Predecir}
       </button>
+
+      @if(!itemToUpdate){
+      <button
+        (click)="saveForm()"
+        type="submit"
+        class="cursor-pointer text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+      >
+        Guardar
+      </button>
+      }
 
       <button
         (click)="closeForm()"
@@ -78,6 +73,28 @@
       >
         Cancelar
       </button>
+    </div>
+
+    <div class="my-5">
+      <label
+        for="total_Cost"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Costo estimado</label
+      >
+      <input
+        [type]="itemToUpdate ? 'number' : 'text'"
+        [value]="
+          itemToUpdate
+            ? form.get('total_Cost')?.value
+            : (form.get('total_Cost')?.value
+              | currency : 'USD' : 'symbol' : '1.2-2')
+        "
+        formControlName="total_Cost"
+        id="total_Cost"
+        class="bg-gray-50 border outline-0 border-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        required
+        [attr.readonly]="!itemToUpdate ? true : null"
+      />
     </div>
   </form>
 

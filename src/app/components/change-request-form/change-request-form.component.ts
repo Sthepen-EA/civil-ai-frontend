@@ -1,9 +1,10 @@
+import { CurrencyPipe } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-change-request-form',
   standalone: true,
-  imports: [],
+  imports: [CurrencyPipe],
   templateUrl: './change-request-form.component.html',
   styleUrl: './change-request-form.component.css',
 })

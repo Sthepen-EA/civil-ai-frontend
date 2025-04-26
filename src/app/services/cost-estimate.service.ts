@@ -21,4 +21,8 @@ export class CostEstimateService {
   createCostEstimation(inputList: any) {
     return this.http.post(this.api_url + '/predict', inputList);
   }
+
+  saveCostEstimation(prediction: any) {
+    return this.http.post(this.api_url + '/save', prediction);
+  }
 }

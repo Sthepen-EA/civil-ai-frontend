@@ -18,4 +18,10 @@ export class ToastComponent {
   closeToast() {
     this.toastService.showToast.set(false);
   }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.closeToast();
+    }, 5000);
+  }
 }
