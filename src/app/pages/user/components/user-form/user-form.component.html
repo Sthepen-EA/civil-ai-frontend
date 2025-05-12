@@ -1,0 +1,132 @@
+<div
+  class="fixed w-full placeholder:text-gray-400 font-medium h-full top-0 left-0 p-10 grid place-items-center z-50"
+>
+  <form
+    [formGroup]="form"
+    class="max-w-lg w-full bg-gray-50 placeholder:text-gray-400 font-medium mx-auto relative z-1 border-1 border-gray-500 rounded-md p-6"
+  >
+    <div class="flex flex-col space-y-1.5 mb-5">
+      <h2 class="text-lg font-semibold leading-none tracking-tight">
+        Nuevo Usuario
+      </h2>
+      <p class="text-sm text-gray-500 font-normal">
+        Complete el formulario para crear un nuevo usuario
+      </p>
+    </div>
+    <div class="mb-5">
+      <label for="name" class="block mb-2 text-sm font-medium"
+        >Nombre completo</label
+      >
+      <input
+        formControlName="name"
+        type="text"
+        id="name"
+        class="border border-gray-300 text-sm rounded-md px-3 py-2 w-full placeholder:text-gray-400 font-normal"
+        required
+        placeholder="Ingrese nombre completo"
+      />
+    </div>
+
+    <div class="mb-5">
+      <label for="email" class="block mb-2 text-sm font-medium">Correo</label>
+      <input
+        formControlName="email"
+        type="email"
+        id="email"
+        class="border border-gray-300 text-sm rounded-md px-3 py-2 w-full placeholder:text-gray-400 font-normal"
+        required
+        placeholder="Ingrese correo"
+      />
+    </div>
+
+    <div class="mb-5">
+      <label for="phone" class="block mb-2 text-sm font-medium"
+        >Número de teléfono</label
+      >
+      <input
+        formControlName="phone"
+        type="phone"
+        id="phone"
+        class="border border-gray-300 text-sm rounded-md px-3 py-2 w-full placeholder:text-gray-400 font-normal"
+        required
+        placeholder="Ingrese el número de teléfono"
+      />
+    </div>
+
+    <div class="mb-5">
+      <label for="state" class="block mb-2 text-sm font-medium">Estado</label>
+
+      <select
+        formControlName="state"
+        id="state"
+        class="border border-gray-300 text-sm rounded-md px-3 py-2 w-full placeholder:text-gray-400 font-normal"
+        required
+      >
+        <option value="" selected disabled>Seleccione el estado</option>
+        <option value="Activo">Activo</option>
+        <option value="Inactivo">Inactivo</option>
+      </select>
+    </div>
+
+    <div class="mb-5">
+      <label for="password" class="block mb-2 text-sm font-medium"
+        >Contraseña</label
+      >
+      <input
+        formControlName="password"
+        type="password"
+        id="password"
+        class="border border-gray-300 text-sm rounded-md px-3 py-2 w-full placeholder:text-gray-400 font-normal"
+        required
+        placeholder="Contraseña"
+      />
+    </div>
+
+    <div class="mb-5">
+      <label for="role" class="block mb-2 text-sm font-medium"
+        >Rol de usuario</label
+      >
+
+      <select
+        formControlName="role"
+        id="role"
+        class="mb-5 border border-gray-300 text-sm rounded-md px-3 py-2 w-full placeholder:text-gray-400 font-normal"
+        required
+      >
+        <option value="" selected disabled>Seleccione el rol</option>
+        <option value="usuario">Usuario</option>
+        <option value="admin">Administrador</option>
+      </select>
+    </div>
+
+    <div
+      class="w-full placeholder:text-gray-400 font-medium flex flex-row justify-end gap-5"
+    >
+      <button
+        (click)="closeForm()"
+        type="submit"
+        class="text-black cursor-pointer border border-gray-300 rounded-md text-sm font-medium bg-transparent h-10 px-4 py-2 flex items-center gap-2 hover:bg-gray-100/80"
+      >
+        Cancelar
+      </button>
+
+      <button
+        (click)="sendForm()"
+        type="submit"
+        class="text-white cursor-pointer rounded-md text-sm font-medium bg-black h-10 px-4 py-2 flex items-center gap-2 hover:bg-black/80"
+      >
+        @if(itemToUpdate) {Actualizar} @else {Crear}
+      </button>
+    </div>
+
+    <app-close-icon
+      (click)="closeForm()"
+      class="absolute top-5 right-5 cursor-pointer"
+    />
+  </form>
+
+  <div
+    class="fixed w-full placeholder:text-gray-400 font-medium h-full top-0 left-0 bg-black opacity-80 cursor-pointer"
+    (click)="closeForm()"
+  ></div>
+</div>

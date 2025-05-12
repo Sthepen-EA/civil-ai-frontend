@@ -7,26 +7,26 @@ import { LogInComponent } from './pages/log-in/log-in.component';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'log-in',
+    redirectTo: 'login',
     pathMatch: 'full',
   },
   {
-    path: 'log-in',
+    path: 'login',
     title: 'Log in',
     component: LogInComponent,
   },
   {
-    path: 'cost-estimate',
+    path: 'estimaciones',
     title: 'Cost Estimate',
     component: CostEstimateComponent,
   },
   {
-    path: 'change-request',
+    path: 'solicitudes',
     title: 'Change Request',
     component: ChangeRequestComponent,
   },
   {
-    path: 'user',
+    path: 'usuarios',
     title: 'User',
     component: UserComponent,
   },

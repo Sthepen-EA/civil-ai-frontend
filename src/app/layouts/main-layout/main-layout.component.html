@@ -1,5 +1,8 @@
 <app-header />
-<main class="max-w-[1440px] mx-auto flex flex-col min-h-[100vh] p-5">
+<main
+  class="max-w-[1440px] mx-auto flex flex-col min-h-[100vh] p-5"
+  [ngClass]="{ 'mt-[82px]': isUserLoggedIn() }"
+>
   <ng-content />
 </main>
 

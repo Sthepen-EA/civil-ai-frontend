@@ -1,8 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
-import { ChangeRequestService } from '../../services/change-request.service';
-import { ChangeRequestTableComponent } from '../../components/change-request-table/change-request-table.component';
-import { ChangeRequestFormComponent } from '../../components/change-request-form/change-request-form.component';
-import { UserService } from '../../services/user.service';
+import { ChangeRequestFormComponent } from './components/change-request-form/change-request-form.component';
+import { ChangeRequestTableComponent } from './components/change-request-table/change-request-table.component';
+import { ChangeRequestService } from './services/change-request.service';
+import { UserService } from '../user/services/user.service';
 
 @Component({
   selector: 'app-change-request',
@@ -15,7 +15,7 @@ export class ChangeRequestComponent {
   changeRequestService: ChangeRequestService = inject(ChangeRequestService);
   userService: UserService = inject(UserService);
 
-  changeRequestList = signal<any>([]);
+  changeRequestList = this.changeRequestService.changeRequestList;
   showForm = false;
   itemSelected: any;
 
@@ -33,9 +33,7 @@ export class ChangeRequestComponent {
           this.changeRequestList.set(data);
         });
     } else {
-      this.changeRequestService.getChangeRequests().subscribe((data) => {
-        this.changeRequestList.set(data);
-      });
+      this.changeRequestService.getAndSetChangeRequestList();
     }
   }
 

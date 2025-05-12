@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { ToastService } from '../../services/toast.service';
 
 @Component({
@@ -15,13 +15,17 @@ export class ToastComponent {
   toastType = this.toastService.toastType;
   toastMessage = this.toastService.toastMessage;
 
-  closeToast() {
-    this.toastService.showToast.set(false);
+  constructor() {
+    effect(() => {
+      if (this.showToast()) {
+        setTimeout(() => {
+          this.closeToast();
+        }, 3000);
+      }
+    });
   }
 
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.closeToast();
-    }, 5000);
+  closeToast() {
+    this.toastService.showToast.set(false);
   }
 }

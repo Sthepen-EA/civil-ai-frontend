@@ -1,0 +1,75 @@
+<div
+  class="relative overflow-x-auto shadow-md sm:rounded-lg border rounded-lg border-gray-200"
+>
+  <div class="flex flex-col space-y-1.5 p-6">
+    <h3 class="text-2xl font-semibold">Historial de Estimaciones</h3>
+    <p class="text-sm text-gray-500">
+      Todas las estimaciones realizadas por los usuarios
+    </p>
+  </div>
+  <div class="max-h-[57vh] overflow-y-auto">
+    <table class="w-full text-sm text-left">
+      <thead class="text-xs uppercase sticky top-0 bg-white z-10">
+        <tr class="hover:bg-gray-50 text-[#71717A] border-b border-gray-200">
+          <th scope="col" class="px-6 py-4">ID</th>
+          <th scope="col" class="px-6 py-4">Superestructura</th>
+          <th scope="col" class="px-6 py-4">Subestructura</th>
+          <th scope="col" class="px-6 py-4">Tramos</th>
+          <th scope="col" class="px-6 py-4">Ancho (m)</th>
+          <th scope="col" class="px-6 py-4">Longitud (m)</th>
+          <th scope="col" class="px-6 py-4">Año</th>
+          <th scope="col" class="px-6 py-4">Costo Estimado ($)</th>
+          <th scope="col" class="px-6 py-4">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of costEstimationList(); track $index) {
+        <tr class="bg-white border-b border-gray-200 hover:bg-gray-50">
+          <td class="px-6 py-6">{{ item.id }}</td>
+          <td class="px-6 py-6">{{ item.input_list.structureType }}</td>
+          <td class="px-6 py-6">{{ item.input_list.abutmentType }}</td>
+          <td class="px-6 py-6">{{ item.input_list.number_of_Spans }}</td>
+          <td class="px-6 py-6">{{ item.input_list.total_Width }}</td>
+          <td class="px-6 py-6">{{ item.input_list.total_Length }}</td>
+          <td class="px-6 py-6">{{ item.input_list.year }}</td>
+          <th scope="row" class="px-6 py-6 font-normal">
+            {{ item.total_Cost | currency : "USD" : "symbol" : "1.2-2" }}
+          </th>
+          <td class="px-6 py-6 text-right flex gap-2">
+            <button
+              (click)="editItem(item)"
+              class="cursor-pointer border p-2 rounded-md border-gray-300 bg-white hover:bg-gray-100"
+            >
+              <app-edit-icon />
+            </button>
+            <button
+              (click)="deleteItem(item)"
+              class="cursor-pointer border p-2 rounded-md border-gray-300 hover:bg-gray-100"
+            >
+              <app-delete-icon />
+            </button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+@if(showForm) {
+
+<div
+  class="fixed w-full placeholder:text-gray-400 font-medium h-full top-0 left-0 p-10 grid place-items-center z-50"
+>
+  <app-cost-estimate-form
+    [itemToUpdate]="itemToUpdate"
+    (showForm)="showForm = $event"
+  />
+
+  <div
+    class="fixed w-full z-10 placeholder:text-gray-400 font-medium h-full top-0 left-0 bg-black opacity-80 cursor-pointer"
+    (click)="showForm = false"
+  ></div>
+</div>
+
+}

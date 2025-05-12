@@ -1,19 +1,20 @@
 import { Component, inject, signal } from '@angular/core';
-import { UserService } from '../../services/user.service';
-import { UserTableComponent } from '../../components/user-table/user-table.component';
-import { UserFormComponent } from '../../components/user-form/user-form.component';
+import { UserTableComponent } from './components/user-table/user-table.component';
+import { UserFormComponent } from './components/user-form/user-form.component';
+import { UserService } from './services/user.service';
+import { UserIconComponent } from '../../icons/user-icon/user-icon.component';
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [UserTableComponent, UserFormComponent],
+  imports: [UserTableComponent, UserFormComponent, UserIconComponent],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css',
 })
 export class UserComponent {
   userService: UserService = inject(UserService);
 
-  userList = signal<any>([]);
+  userList = this.userService.userList;
   showForm = false;
   itemToUpdate!: any;
 
@@ -22,9 +23,7 @@ export class UserComponent {
   }
 
   setuserList() {
-    this.userService.getUsers().subscribe((data) => {
-      this.userList.set(data);
-    });
+    this.userService.getAndSetUserList();
   }
 
   openForm() {

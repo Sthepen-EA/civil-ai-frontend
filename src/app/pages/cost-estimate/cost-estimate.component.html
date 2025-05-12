@@ -1,14 +1,39 @@
-<button
+<!-- <button
   (click)="openForm()"
   type="button"
   class="text-white cursor-pointer bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-5"
 >
   Agregar
-</button>
+</button> -->
+
+<h1 class="text-2xl font-bold mb-6">Estimación de Costos de Puentes</h1>
+
+<div class="mb-4 rounded-md bg-gray-100 w-fit p-1">
+  <button
+    (click)="showEstimationTable = false"
+    class="cursor-pointer px-3 py-1.5 text-sm font-medium text-gray-500"
+    [ngClass]="{ 'bg-white shadow-2xl text-gray-900 ': !showEstimationTable }"
+  >
+    Nueva Estimación</button
+  ><button
+    class="cursor-pointer px-3 py-1.5 text-sm font-medium text-gray-500"
+    (click)="showEstimationTable = true"
+    [ngClass]="{ 'bg-white shadow-2xl text-gray-900 ': showEstimationTable }"
+  >
+    Historial de Estimaciones
+  </button>
+</div>
+
+@if(!showEstimationTable) {
+<div class="grid grid-cols-2 gap-6">
+  <app-user-instructions />
+  <app-cost-estimate-form />
+</div>
+
+} @else {
 
 <app-cost-estimate-table [costEstimationList]="costEstimationList" />
-
-@if(showForm) {
-<app-cost-estimate-form (showForm)="showForm = $event" />
+} @if(showForm) {
+<app-cost-estimate-form />
 
 }

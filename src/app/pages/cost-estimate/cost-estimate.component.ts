@@ -1,13 +1,20 @@
-import { Component, inject, signal } from '@angular/core';
-import { CostEstimateService } from '../../services/cost-estimate.service';
-import { CostEstimateTableComponent } from '../../components/cost-estimate-table/cost-estimate-table.component';
-import { CostEstimateFormComponent } from '../../components/cost-estimate-form/cost-estimate-form.component';
-import { UserService } from '../../services/user.service';
+import { Component, inject } from '@angular/core';
+import { UserInstructionsComponent } from './components/user-instructions/user-instructions.component';
+import { CostEstimateTableComponent } from './components/cost-estimate-table/cost-estimate-table.component';
+import { CostEstimateFormComponent } from './components/cost-estimate-form/cost-estimate-form.component';
+import { NgClass } from '@angular/common';
+import { CostEstimateService } from './services/cost-estimate.service';
+import { UserService } from '../user/services/user.service';
 
 @Component({
   selector: 'app-cost-estimate',
   standalone: true,
-  imports: [CostEstimateTableComponent, CostEstimateFormComponent],
+  imports: [
+    CostEstimateTableComponent,
+    CostEstimateFormComponent,
+    UserInstructionsComponent,
+    NgClass,
+  ],
   templateUrl: './cost-estimate.component.html',
   styleUrl: './cost-estimate.component.css',
 })
@@ -15,8 +22,9 @@ export class CostEstimateComponent {
   costEstimateService: CostEstimateService = inject(CostEstimateService);
   userService: UserService = inject(UserService);
 
-  costEstimationList = signal<any>([]);
+  costEstimationList = this.costEstimateService.costEstimationList;
   showForm = false;
+  showEstimationTable = false;
 
   ngOnInit(): void {
     this.setCostEstimationList();
@@ -29,12 +37,10 @@ export class CostEstimateComponent {
       this.costEstimateService
         .getCostEstimationsbyUser(userData._id)
         .subscribe((data) => {
-          this.costEstimationList.set(data);
+          this.costEstimateService.costEstimationList.set(data);
         });
     } else {
-      this.costEstimateService.getCostEstimations().subscribe((data) => {
-        this.costEstimationList.set(data);
-      });
+      this.costEstimateService.getAndSetCostEstimationList();
     }
   }
 

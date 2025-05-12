@@ -1,0 +1,72 @@
+<div
+  class="relative overflow-x-auto shadow-md border rounded-lg border-gray-200"
+>
+  <div class="flex flex-col space-y-1.5 p-6">
+    <h3 class="text-2xl font-semibold">Usuarios del Sistema</h3>
+    <p class="text-sm text-gray-500">
+      Administre los usuarios que tienen acceso a la plataforma
+    </p>
+  </div>
+  <div class="max-h-[65vh] overflow-y-auto">
+    <table class="w-full text-sm text-left">
+      <thead class="text-xs uppercase sticky top-0 bg-white z-10">
+        <tr class="hover:bg-gray-50 text-[#71717A] border-b border-gray-200">
+          <th scope="col" class="px-6 py-3">ID</th>
+          <th scope="col" class="px-6 py-3">Nombre</th>
+          <th scope="col" class="px-6 py-3">Correo</th>
+          <th scope="col" class="px-6 py-3">Teléfono</th>
+          <th scope="col" class="px-6 py-3">Estado</th>
+          <th scope="col" class="px-6 py-3">Contraseña</th>
+          <th scope="col" class="px-6 py-3">Rol</th>
+          <th scope="col" class="px-6 py-3">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of userList(); track $index) {
+        <tr class="bg-white border-b border-gray-200 hover:bg-gray-50">
+          <td class="px-6 py-6">{{ item.id }}</td>
+          <td class="px-6 py-6">{{ item.name }}</td>
+          <td class="px-6 py-6">{{ item.email }}</td>
+          <td class="px-6 py-6">{{ item.phone }}</td>
+          <td class="px-6 py-6">
+            <p
+              class="inline-flex items-center rounded-full border px-2.5 py-0.5 pb-1 text-xs font-semibold"
+              [ngClass]="{'bg-black text-gray-50': item.state === 'Activo',
+            'bg-red-500 text-white': item.state === 'Inactivo',
+            }
+            "
+            >
+              {{ item.state }}
+            </p>
+          </td>
+          <td class="px-6 py-6">{{ item.password }}</td>
+          <td class="px-6 py-6">
+            <p
+              class="inline-flex border border-gray-200 items-center rounded-full px-2.5 py-0.5 pb-1 text-xs font-semibold"
+              [ngClass]="{'bg-black text-gray-50 ': item.role === 'admin',
+            }
+            "
+            >
+              @if(item.role == 'admin') {Administrador} @else { Usuario}
+            </p>
+          </td>
+          <td class="px-6 py-6 text-right flex gap-2">
+            <button
+              (click)="editItem(item)"
+              class="cursor-pointer border p-2 rounded-md border-gray-300 bg-white hover:bg-gray-100"
+            >
+              <app-edit-icon />
+            </button>
+            <button
+              (click)="deleteItem(item)"
+              class="cursor-pointer border p-2 rounded-md border-gray-300 hover:bg-gray-100"
+            >
+              <app-delete-icon />
+            </button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

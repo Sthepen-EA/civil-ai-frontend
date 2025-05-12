@@ -6,13 +6,14 @@ import {
   Validators,
 } from '@angular/forms';
 import { ToastService } from '../../services/toast.service';
-import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
+import { UserService } from '../user/services/user.service';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-log-in',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, NgClass],
   templateUrl: './log-in.component.html',
   styleUrl: './log-in.component.css',
 })
@@ -26,38 +27,43 @@ export class LogInComponent {
     password: new FormControl('', [Validators.required]),
   });
 
+  isLoading = false;
+
   sendForm() {
     if (this.form.invalid) {
       this.toastService.showToast.set(true);
       this.toastService.toastType.set('toast-error');
       this.toastService.toastMessage.set('Credenciales incorrectas.');
     } else {
-      this.userService.logIn(this.form.value).subscribe(
-        (res) => {
-          const userData = (res as any).user;
+      this.isLoading = true;
+      setTimeout(() => {
+        this.userService.logIn(this.form.value).subscribe(
+          (res) => {
+            const userData = (res as any).user;
 
-          if (!(res as any).success) {
+            if (!(res as any).success) {
+              this.toastService.showToast.set(true);
+              this.toastService.toastType.set('toast-error');
+              this.toastService.toastMessage.set('Credenciales incorrectas.');
+            } else {
+              this.form.reset();
+              this.toastService.showToast.set(true);
+              this.toastService.toastType.set('toast-success');
+              this.toastService.toastMessage.set(
+                `Ha iniciado sesión correctamente como "${userData.role.toUpperCase()}".`
+              );
+              this.route.navigate(['/estimaciones']);
+              this.userService.setUserData(userData);
+            }
+          },
+          (err) => {
             this.toastService.showToast.set(true);
             this.toastService.toastType.set('toast-error');
             this.toastService.toastMessage.set('Credenciales incorrectas.');
-          } else {
-            this.form.reset();
-            this.toastService.showToast.set(true);
-            this.toastService.toastType.set('toast-success');
-            this.toastService.toastMessage.set(
-              `Ha iniciado sesión correctamente como "${userData.role.toUpperCase()}".`
-            );
-            this.route.navigate(['/cost-estimate']);
-            this.userService.setUserData(userData);
+            console.log(err);
           }
-        },
-        (err) => {
-          this.toastService.showToast.set(true);
-          this.toastService.toastType.set('toast-error');
-          this.toastService.toastMessage.set('Credenciales incorrectas.');
-          console.log(err);
-        }
-      );
+        );
+      }, 1000);
     }
   }
 }

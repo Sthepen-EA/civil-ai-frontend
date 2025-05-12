@@ -1,0 +1,91 @@
+<div
+  class="relative overflow-x-auto shadow-md border rounded-lg border-gray-200"
+>
+  <div class="flex flex-col space-y-1.5 p-6">
+    <h3 class="text-2xl font-semibold">Solicitudes de Usuarios</h3>
+    <p class="text-sm text-gray-500">
+      Gestione las solicitudes de cambio enviadas por los usuarios
+    </p>
+  </div>
+  <div class="max-h-[65vh] overflow-y-auto">
+    <table class="w-full text-sm text-left">
+      <thead class="text-xs uppercase sticky top-0 bg-white z-10">
+        <tr class="hover:bg-gray-50 text-[#71717A] border-b border-gray-200">
+          <th scope="col" class="px-3 py-3">ID</th>
+          <th scope="col" class="px-3 py-3">ID de predicción</th>
+          <th scope="col" class="px-3 py-3">Tipo de solicitud</th>
+          <th scope="col" class="px-3 py-3">ID de usuario</th>
+          <th scope="col" class="px-3 py-3">Fecha</th>
+          <th scope="col" class="px-3 py-3">Estimación actual</th>
+          <th scope="col" class="px-3 py-3">Estimación nueva</th>
+          <th scope="col" class="px-3 py-3">Estado</th>
+          <th scope="col" class="px-3 py-3">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of changeRequestList(); track $index) {
+        <tr class="bg-white border-b border-gray-200 hover:bg-gray-50">
+          <td class="px-3 py-6">{{ item.id }}</td>
+          <td class="px-3 py-6">{{ item.prediction_id }}</td>
+          <td
+            class="inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold"
+            [ngClass]="{'text-black  border-gray-200': item.request_type === 'Edición',
+            'bg-red-500 text-white border-red-500': item.request_type === 'Eliminación',
+            }
+            "
+          >
+            {{ item.request_type }}
+          </td>
+          <td class="px-3 py-6">{{ item.user_id }}</td>
+          <td class="px-3 py-6">{{ item.date }}</td>
+          <th
+            (click)="showCostEstimation(item.original_prediction_object)"
+            scope="row"
+            class="px-3 py-6 text-center font-medium cursor-pointer"
+          >
+            Ver
+          </th>
+          <th
+            (click)="
+              item.request_type === 'Edición'
+                ? showCostEstimation(item.new_prediction_object)
+                : ''
+            "
+            scope="row"
+            class="px-3 py-6 text-center font-medium cursor-pointer"
+          >
+            @if(item.request_type === 'Edición') {Ver} @else { No aplica}
+          </th>
+          <td class="px-3 py-6">
+            <p
+              class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold"
+              [ngClass]="{' border-gray-200 bg-white text-black ': item.status === 'Pendiente',
+            'bg-black text-gray-50': item.status === 'Aprobado',
+            'bg-red-500 text-white': item.status === 'Rechazado',
+            }
+            "
+            >
+              {{ item.status }}
+            </p>
+          </td>
+
+          <td class="px-6 py-6 text-right flex gap-2">
+            <button
+              (click)="approveRequest(item)"
+              class="flex gap-1 items-center cursor-pointer border p-2 rounded-md border-gray-300 bg-white hover:bg-gray-100"
+            >
+              <app-check-icon /> Aprobar
+            </button>
+            <button
+              (click)="rejectRequest(item)"
+              class="flex gap-1 items-center cursor-pointer border p-2 rounded-md border-gray-300 hover:bg-gray-100"
+            >
+              <app-decline-icon /> Rechazar
+            </button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
