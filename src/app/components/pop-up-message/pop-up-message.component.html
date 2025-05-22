@@ -1,0 +1,59 @@
+@if(showMessage()){
+<div class="fixed w-full h-full top-0 left-0 p-10 grid place-items-center z-30">
+  <div
+    class="max-w-lg w-full relative z-50 rounded-lg border bg-card text-card-foreground shadow-sm border-gray-300 p-6 bg-white"
+  >
+    <div class="flex flex-col space-y-1.5 text-center sm:text-left">
+      <h2
+        id="radix-«r10»"
+        class="text-lg font-semibold leading-none tracking-tight"
+      >
+        {{ messageTitle() }}
+      </h2>
+      <p id="radix-«r11»" class="text-sm text-muted-foreground">
+        {{ messageDescription() }}
+      </p>
+    </div>
+    <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
+      <button
+        class="cursor-pointer hover:bg-gray-100 border-gray-200 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
+        (click)="showMessage.set(false); messageConfirmation.set(false)"
+      >
+        Cancelar</button
+      ><button
+        class="cursor-pointer inline-flex hover:bg-red-400 bg-red-500 text-white items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-destructive/90 h-10 px-4 py-2"
+        (click)="showMessage.set(false); messageConfirmation.set(true)"
+      >
+        Confirmar
+      </button>
+    </div>
+    <button
+      (click)="showMessage.set(false)"
+      type="button"
+      class="cursor-pointer absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-x h-4 w-4"
+      >
+        <path d="M18 6 6 18"></path>
+        <path d="m6 6 12 12"></path>
+      </svg>
+      <span class="sr-only">Close</span>
+    </button>
+  </div>
+
+  <div
+    class="fixed z-20 w-full h-full top-0 left-0 bg-gray-900 opacity-70 cursor-pointer"
+    (click)="showMessage.set(false)"
+  ></div>
+</div>
+}

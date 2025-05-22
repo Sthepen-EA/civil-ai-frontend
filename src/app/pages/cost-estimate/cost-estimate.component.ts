@@ -5,6 +5,7 @@ import { CostEstimateFormComponent } from './components/cost-estimate-form/cost-
 import { NgClass } from '@angular/common';
 import { CostEstimateService } from './services/cost-estimate.service';
 import { UserService } from '../user/services/user.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-cost-estimate',
@@ -21,28 +22,10 @@ import { UserService } from '../user/services/user.service';
 export class CostEstimateComponent {
   costEstimateService: CostEstimateService = inject(CostEstimateService);
   userService: UserService = inject(UserService);
+  toastService: ToastService = inject(ToastService);
 
-  costEstimationList = this.costEstimateService.costEstimationList;
   showForm = false;
   showEstimationTable = false;
-
-  ngOnInit(): void {
-    this.setCostEstimationList();
-  }
-
-  setCostEstimationList() {
-    const userData = this.userService.userData();
-
-    if (userData.role === 'user') {
-      this.costEstimateService
-        .getCostEstimationsbyUser(userData._id)
-        .subscribe((data) => {
-          this.costEstimateService.costEstimationList.set(data);
-        });
-    } else {
-      this.costEstimateService.getAndSetCostEstimationList();
-    }
-  }
 
   openForm() {
     this.showForm = !this.showForm;

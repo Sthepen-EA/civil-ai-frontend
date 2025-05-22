@@ -1,5 +1,6 @@
 import {
   Component,
+  effect,
   EventEmitter,
   inject,
   Input,
@@ -12,6 +13,7 @@ import { CheckIconComponent } from '../../../../icons/check-icon/check-icon.comp
 import { DeclineIconComponent } from '../../../../icons/decline-icon/decline-icon.component';
 import { ToastService } from '../../../../services/toast.service';
 import { ChangeRequestService } from '../../services/change-request.service';
+import { UserService } from '../../../user/services/user.service';
 
 @Component({
   selector: 'app-change-request-table',
@@ -21,11 +23,43 @@ import { ChangeRequestService } from '../../services/change-request.service';
   styleUrl: './change-request-table.component.css',
 })
 export class ChangeRequestTableComponent {
-  @Input() changeRequestList: Signal<any> = signal([]);
   @Output() changeItem = new EventEmitter<any>();
 
   changeRequestService = inject(ChangeRequestService);
   toastService = inject(ToastService);
+  userService = inject(UserService);
+
+  changeRequestList = this.changeRequestService.changeRequestList;
+
+  constructor() {
+    effect(() => {
+      if (this.changeRequestList().length === 0) {
+        this.toastService.showMessage.set(true);
+        this.toastService.messageTitle.set('Solicitudes de cambio vacios.');
+        this.toastService.messageDescription.set(
+          'No se encontraron solicitudes de cambios registradas.'
+        );
+      }
+    });
+  }
+
+  ngOnInit(): void {
+    this.setchangeRequestList();
+  }
+
+  setchangeRequestList() {
+    const userData = this.userService.userData();
+
+    if (userData.role === 'user') {
+      this.changeRequestService
+        .getChangeRequestsbyUser(userData._id)
+        .subscribe((data) => {
+          this.changeRequestList.set(data);
+        });
+    } else {
+      this.changeRequestService.getAndSetChangeRequestList();
+    }
+  }
 
   showCostEstimation(item: any) {
     this.changeItem.emit(item);
@@ -45,6 +79,7 @@ export class ChangeRequestTableComponent {
           this.toastService.toastMessage.set(
             'Solicitud aprobada correctamente.'
           );
+          this.changeRequestService.getAndSetChangeRequestList();
         },
         error: (err) => {
           console.log(err);

@@ -15,27 +15,8 @@ export class ChangeRequestComponent {
   changeRequestService: ChangeRequestService = inject(ChangeRequestService);
   userService: UserService = inject(UserService);
 
-  changeRequestList = this.changeRequestService.changeRequestList;
   showForm = false;
   itemSelected: any;
-
-  ngOnInit(): void {
-    this.setchangeRequestList();
-  }
-
-  setchangeRequestList() {
-    const userData = this.userService.userData();
-
-    if (userData.role === 'user') {
-      this.changeRequestService
-        .getChangeRequestsbyUser(userData._id)
-        .subscribe((data) => {
-          this.changeRequestList.set(data);
-        });
-    } else {
-      this.changeRequestService.getAndSetChangeRequestList();
-    }
-  }
 
   openForm() {
     this.showForm = !this.showForm;

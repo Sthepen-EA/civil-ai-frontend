@@ -1,5 +1,6 @@
 import {
   Component,
+  effect,
   EventEmitter,
   inject,
   Input,
@@ -27,19 +28,39 @@ export class UserTableComponent {
   userService = inject(UserService);
   toastService = inject(ToastService);
 
+  userId = '';
+
+  constructor() {
+    effect(() => {
+      if (this.toastService.messageConfirmation()) {
+        this.userService.deleteUser(this.userId).subscribe({
+          next: () => {
+            this.toastService.showToast.set(true);
+            this.toastService.toastType.set('toast-success');
+            this.toastService.toastMessage.set(
+              'Usuario eliminado correctamente.'
+            );
+            this.toastService.resetMessageInputs();
+            this.userService.getAndSetUserList();
+          },
+          error: (err) => {
+            console.log(err);
+          },
+        });
+      }
+    });
+  }
+
   editItem(item: any) {
     this.changeItem.emit(item);
   }
+
   deleteItem(item: any) {
-    this.userService.deleteUser(item.id).subscribe({
-      next: () => {
-        this.toastService.showToast.set(true);
-        this.toastService.toastType.set('toast-success');
-        this.toastService.toastMessage.set('Usuario eliminado correctamente.');
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
+    this.toastService.messageTitle.set('Confirmación de eliminación');
+    this.toastService.messageDescription.set(
+      '¿Esta seguro que desea eliminar el usuario?'
+    );
+    this.toastService.showMessage.set(true);
+    this.userId = item.id;
   }
 }

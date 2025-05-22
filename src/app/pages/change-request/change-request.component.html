@@ -1,9 +1,6 @@
 <h1 class="text-2xl font-bold mb-6">Solicitudes de Cambio</h1>
 
-<app-change-request-table
-  [changeRequestList]="changeRequestList"
-  (changeItem)="sendChangeItem($event)"
-/>
+<app-change-request-table (changeItem)="sendChangeItem($event)" />
 
 @if(showForm) {
 <app-change-request-form

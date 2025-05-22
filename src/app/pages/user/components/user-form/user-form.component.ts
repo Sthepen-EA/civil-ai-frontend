@@ -38,7 +38,7 @@ export class UserFormComponent {
     state: new FormControl('', Validators.required),
     password: new FormControl('', [
       Validators.required,
-      Validators.minLength(6),
+      Validators.minLength(4),
     ]),
     role: new FormControl('', Validators.required),
   });
@@ -110,9 +110,7 @@ export class UserFormComponent {
           this.form.reset();
           this.toastService.showToast.set(true);
           this.toastService.toastType.set('toast-success');
-          this.toastService.toastMessage.set(
-            'Solicitud de creación de usuario creada correctamente.'
-          );
+          this.toastService.toastMessage.set('Usuario creado correctamente.');
           this.userService.getAndSetUserList();
         },
         error: (err) => {
