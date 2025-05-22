@@ -28,7 +28,7 @@
           <th scope="col" class="px-3 py-3">ID</th>
           <th scope="col" class="px-3 py-3">ID de predicción</th>
           <th scope="col" class="px-3 py-3">Tipo de solicitud</th>
-          <th scope="col" class="px-3 py-3">ID de usuario</th>
+          <th scope="col" class="px-3 py-3">Usuario</th>
           <th scope="col" class="px-3 py-3">Fecha</th>
           <th scope="col" class="px-3 py-3">Estimación actual</th>
           <th scope="col" class="px-3 py-3">Estimación nueva</th>
@@ -41,16 +41,18 @@
         <tr class="bg-white border-b border-gray-200 hover:bg-gray-50">
           <td class="px-3 py-6">{{ item.id }}</td>
           <td class="px-3 py-6">{{ item.prediction_id }}</td>
-          <td
-            class="inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold"
-            [ngClass]="{'text-black  border-gray-200': item.request_type === 'Edición',
+          <td class="px-3 py-6">
+            <span
+              class="inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold"
+              [ngClass]="{'text-black  border-gray-200': item.request_type === 'Edición',
             'bg-red-500 text-white border-red-500': item.request_type === 'Eliminación',
             }
             "
-          >
-            {{ item.request_type }}
+            >
+              {{ item.request_type }}
+            </span>
           </td>
-          <td class="px-3 py-6">{{ item.user_id }}</td>
+          <td class="px-3 py-6">{{ item.user_name }}</td>
           <td class="px-3 py-6">{{ item.date }}</td>
           <th
             (click)="showCostEstimation(item.original_prediction_object)"
@@ -84,6 +86,7 @@
           </td>
 
           <td class="px-6 py-6 text-right flex gap-2">
+            @if(item.status === 'Pendiente') {
             <button
               (click)="approveRequest(item)"
               class="flex gap-1 items-center cursor-pointer border p-2 rounded-md border-gray-300 bg-white hover:bg-gray-100"
@@ -96,6 +99,7 @@
             >
               <app-decline-icon /> Rechazar
             </button>
+            }
           </td>
         </tr>
         }

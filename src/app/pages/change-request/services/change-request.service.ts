@@ -32,6 +32,7 @@ export class ChangeRequestService {
   getAndSetChangeRequestList() {
     this.getChangeRequests().subscribe((data) => {
       this.changeRequestList.set(data);
+      console.log(data);
     });
   }
 }

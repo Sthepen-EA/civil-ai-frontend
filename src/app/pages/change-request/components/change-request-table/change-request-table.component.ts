@@ -134,6 +134,7 @@ export class ChangeRequestTableComponent {
           this.toastService.toastMessage.set(
             'Solicitud rechazada correctamente.'
           );
+          this.changeRequestService.getAndSetChangeRequestList();
         },
         error: (err) => {
           console.log(err);

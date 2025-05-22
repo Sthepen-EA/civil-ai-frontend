@@ -53,26 +53,6 @@ export class CostEstimateFormComponent {
     total_Cost: new FormControl(0),
   });
 
-  // editForm = new FormGroup({
-  //   structureType: new FormControl('', Validators.required),
-  //   abutmentType: new FormControl('', Validators.required),
-  //   number_of_Spans: new FormControl(0, [
-  //     Validators.required,
-  //     Validators.min(1),
-  //   ]),
-  //   total_Width: new FormControl(0, [Validators.required, Validators.min(0.1)]),
-  //   total_Length: new FormControl(0, [
-  //     Validators.required,
-  //     Validators.min(0.1),
-  //   ]),
-  //   year: new FormControl(0, [
-  //     Validators.required,
-  //     Validators.min(1900),
-  //     Validators.max(new Date().getFullYear()),
-  //   ]),
-  //   total_Cost: new FormControl(0),
-  // });
-
   atributos: any[] = [
     {
       name: 'number_of_Spans',
@@ -201,6 +181,7 @@ export class CostEstimateFormComponent {
           prediction_id: this.itemToUpdate.id,
           request_type: 'Edición',
           user_id: this.userService.userData()._id,
+          user_name: this.userService.userData().name,
           date: formattedDate,
           original_prediction_object: {
             _id: this.itemToUpdate.id,

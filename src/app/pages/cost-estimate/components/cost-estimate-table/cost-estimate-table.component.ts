@@ -43,12 +43,11 @@ export class CostEstimateTableComponent {
   itemToUpdate!: ICostEstimate;
   costEstimationList = this.costEstimateService.costEstimationList;
 
-  updatePermission = false;
   searchTerm = signal('');
 
   constructor() {
     effect(() => {
-      if (this.updatePermission) {
+      if (this.toastService.messageConfirmation()) {
         const today = new Date();
         const formattedDate = today.toISOString().split('T')[0];
 
@@ -57,6 +56,7 @@ export class CostEstimateTableComponent {
           prediction_id: this.itemToUpdate.id,
           request_type: 'Eliminación',
           user_id: this.userService.userData()._id,
+          user_name: this.userService.userData().name,
           date: formattedDate,
           original_prediction_object: this.itemToUpdate,
           new_prediction_object: this.itemToUpdate,
@@ -70,6 +70,8 @@ export class CostEstimateTableComponent {
             this.toastService.toastMessage.set(
               'Solicitud de eliminación de estimación de costo creada correctamente.'
             );
+            this.toastService.resetMessageInputs();
+            this.userService.getAndSetUserList();
           },
           error: (err) => {
             console.log(err);
@@ -113,6 +115,10 @@ export class CostEstimateTableComponent {
 
   deleteItem(item: ICostEstimate) {
     this.itemToUpdate = item;
-    this.updatePermission = true;
+    this.toastService.messageTitle.set('Confirmación de eliminación');
+    this.toastService.messageDescription.set(
+      '¿Esta seguro que desea eliminar la estimación?'
+    );
+    this.toastService.showMessage.set(true);
   }
 }
