@@ -31,9 +31,18 @@ export class LogInComponent {
 
   sendForm() {
     if (this.form.invalid) {
+      const controls = this.form.controls;
+
+      if (controls.email.errors?.['email']) {
+        this.toastService.showToast.set(true);
+        this.toastService.toastType.set('toast-error');
+        this.toastService.toastMessage.set('Ingrese un correo válido.');
+        return;
+      }
       this.toastService.showToast.set(true);
       this.toastService.toastType.set('toast-error');
       this.toastService.toastMessage.set('Credenciales incorrectas.');
+      return;
     } else {
       this.isLoading = true;
       setTimeout(() => {
@@ -45,7 +54,16 @@ export class LogInComponent {
               this.toastService.showToast.set(true);
               this.toastService.toastType.set('toast-error');
               this.toastService.toastMessage.set('Credenciales incorrectas.');
+              this.isLoading = false;
             } else {
+              if (userData.state !== 'Activo') {
+                this.toastService.showToast.set(true);
+                this.toastService.toastType.set('toast-error');
+                this.toastService.toastMessage.set('Cuenta inactiva.');
+                this.isLoading = false;
+                return;
+              }
+
               this.form.reset();
               this.toastService.showToast.set(true);
               this.toastService.toastType.set('toast-success');
@@ -60,7 +78,7 @@ export class LogInComponent {
             this.toastService.showToast.set(true);
             this.toastService.toastType.set('toast-error');
             this.toastService.toastMessage.set('Credenciales incorrectas.');
-            console.log(err);
+            this.isLoading = false;
           }
         );
       }, 1000);

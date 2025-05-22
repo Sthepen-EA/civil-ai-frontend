@@ -31,19 +31,21 @@ export class UserFormComponent {
       Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/),
     ]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    phone: new FormControl('', [
-      Validators.required,
-      Validators.pattern('^[0-9]{7,15}$'),
-    ]),
-    state: new FormControl('', Validators.required),
+    phone: new FormControl('', [Validators.required]),
+    state: new FormControl('Activo', Validators.required),
     password: new FormControl('', [
       Validators.required,
-      Validators.minLength(4),
+      Validators.minLength(8),
+      Validators.pattern(
+        /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/
+      ),
     ]),
-    role: new FormControl('', Validators.required),
+    role: new FormControl('Usuario', Validators.required),
   });
 
   closeForm() {
+    this.form.reset();
+    this.itemToUpdate = null;
     this.showForm.emit(false);
   }
 
@@ -80,7 +82,14 @@ export class UserFormComponent {
               `"${this.getLabel(key)}" no es un correo válido.`
             );
           }
-          if (errors?.['pattern']) {
+
+          if (key === 'password' && errors?.['pattern']) {
+            this.showToastError(
+              `"${this.getLabel(
+                key
+              )}" debe tener mínimo 8 caracteres, una mayúscula, un número y un caracter especial.`
+            );
+          } else if (errors?.['pattern']) {
             this.showToastError(
               `"${this.getLabel(key)}" tiene un formato incorrecto.`
             );
@@ -137,5 +146,25 @@ export class UserFormComponent {
     };
 
     return labels[field] || field;
+  }
+
+  allowOnlyLetters(event: KeyboardEvent) {
+    const inputChar = event.key;
+
+    const pattern = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]$/;
+
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+
+  allowOnlyNumbers(event: KeyboardEvent) {
+    const inputChar = event.key;
+
+    const pattern = /^[0-9]$/;
+
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
   }
 }

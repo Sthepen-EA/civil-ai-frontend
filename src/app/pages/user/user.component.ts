@@ -28,6 +28,7 @@ export class UserComponent {
 
   openForm() {
     this.showForm = !this.showForm;
+    this.itemToUpdate = null;
   }
 
   sendChangeItem(item: any) {
