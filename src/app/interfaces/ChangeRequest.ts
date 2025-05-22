@@ -1,5 +1,3 @@
-import { ICostEstimate } from './CostEstimate';
-
 export interface IChangeRequest {
   _id: string;
   prediction_id: string;

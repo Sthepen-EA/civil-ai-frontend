@@ -27,7 +27,25 @@ export class CostEstimateComponent {
   showForm = false;
   showEstimationTable = false;
 
+  ngOnInit(): void {
+    this.setCostEstimationList();
+  }
+
   openForm() {
     this.showForm = !this.showForm;
+  }
+
+  setCostEstimationList() {
+    const userData = this.userService.userData();
+
+    if (userData.role === 'user') {
+      this.costEstimateService
+        .getCostEstimationsbyUser(userData._id)
+        .subscribe((data) => {
+          this.costEstimateService.costEstimationList.set(data);
+        });
+    } else {
+      this.costEstimateService.getAndSetCostEstimationList();
+    }
   }
 }

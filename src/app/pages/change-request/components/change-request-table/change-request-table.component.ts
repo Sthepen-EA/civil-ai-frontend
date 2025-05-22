@@ -1,5 +1,6 @@
 import {
   Component,
+  computed,
   effect,
   EventEmitter,
   inject,
@@ -14,11 +15,17 @@ import { DeclineIconComponent } from '../../../../icons/decline-icon/decline-ico
 import { ToastService } from '../../../../services/toast.service';
 import { ChangeRequestService } from '../../services/change-request.service';
 import { UserService } from '../../../user/services/user.service';
+import { SearchiconComponent } from '../../../cost-estimate/icons/searchicon/searchicon.component';
 
 @Component({
   selector: 'app-change-request-table',
   standalone: true,
-  imports: [CheckIconComponent, DeclineIconComponent, NgClass],
+  imports: [
+    CheckIconComponent,
+    DeclineIconComponent,
+    NgClass,
+    SearchiconComponent,
+  ],
   templateUrl: './change-request-table.component.html',
   styleUrl: './change-request-table.component.css',
 })
@@ -30,6 +37,7 @@ export class ChangeRequestTableComponent {
   userService = inject(UserService);
 
   changeRequestList = this.changeRequestService.changeRequestList;
+  searchTerm = signal('');
 
   constructor() {
     effect(() => {
@@ -42,6 +50,22 @@ export class ChangeRequestTableComponent {
       }
     });
   }
+
+  filteredChangeRequests = computed(() => {
+    const term = this.searchTerm().toLowerCase().trim();
+
+    // if (!isNaN(Number(term))) {
+    //   return this.changeRequestList();
+    // }
+
+    return this.changeRequestList().filter((item: any) => {
+      return (
+        item.request_type.toLowerCase().includes(term) ||
+        item.status.toLowerCase().includes(term) ||
+        item.user_id.toLowerCase().includes(term)
+      );
+    });
+  });
 
   ngOnInit(): void {
     this.setchangeRequestList();

@@ -3,7 +3,7 @@
 >
   <form
     [formGroup]="form"
-    class="max-w-lg w-full bg-gray-50 placeholder:text-gray-400 font-medium mx-auto relative z-1 border-1 border-gray-500 rounded-md p-6"
+    class="max-w-lg w-full bg-gray-50 placeholder:text-gray-400 font-medium mx-auto relative z-40 border-1 border-gray-500 rounded-md p-6"
   >
     <div class="flex flex-col space-y-1.5 mb-5">
       <h2 class="text-lg font-semibold leading-none tracking-tight">
@@ -126,7 +126,7 @@
   </form>
 
   <div
-    class="fixed w-full placeholder:text-gray-400 font-medium h-full top-0 left-0 bg-black opacity-80 cursor-pointer"
+    class="fixed w-full placeholder:text-gray-400 font-medium h-full top-0 left-0 z-20 bg-black opacity-80 cursor-pointer"
     (click)="closeForm()"
   ></div>
 </div>

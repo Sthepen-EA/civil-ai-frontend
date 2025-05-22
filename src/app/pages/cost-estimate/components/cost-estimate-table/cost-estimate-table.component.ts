@@ -1,5 +1,12 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, effect, inject, signal, Signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  signal,
+  Signal,
+} from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CostEstimateFormComponent } from '../cost-estimate-form/cost-estimate-form.component';
 import { ToastService } from '../../../../services/toast.service';
@@ -10,6 +17,7 @@ import { DeleteIconComponent } from '../../../../icons/delete-icon/delete-icon.c
 import { ChangeRequestService } from '../../../change-request/services/change-request.service';
 import { UserService } from '../../../user/services/user.service';
 import { CostEstimateService } from '../../services/cost-estimate.service';
+import { SearchiconComponent } from '../../icons/searchicon/searchicon.component';
 
 @Component({
   selector: 'app-cost-estimate-table',
@@ -20,6 +28,7 @@ import { CostEstimateService } from '../../services/cost-estimate.service';
     CostEstimateFormComponent,
     EditIconComponent,
     DeleteIconComponent,
+    SearchiconComponent,
   ],
   templateUrl: './cost-estimate-table.component.html',
   styleUrl: './cost-estimate-table.component.css',
@@ -35,6 +44,7 @@ export class CostEstimateTableComponent {
   costEstimationList = this.costEstimateService.costEstimationList;
 
   updatePermission = false;
+  searchTerm = signal('');
 
   constructor() {
     effect(() => {
@@ -69,9 +79,22 @@ export class CostEstimateTableComponent {
     });
   }
 
-  ngOnInit(): void {
-    this.setCostEstimationList();
-  }
+  filteredEstimates = computed(() => {
+    const term = this.searchTerm().toLowerCase().trim();
+
+    // if (!isNaN(Number(term))) {
+    //   return this.costEstimationList();
+    // }
+
+    return this.costEstimationList().filter((item: any) => {
+      const { structureType, abutmentType } = item.input_list;
+
+      return (
+        structureType.toLowerCase().includes(term) ||
+        abutmentType.toLowerCase().includes(term)
+      );
+    });
+  });
 
   ngAfterViewInit(): void {
     if (this.costEstimationList().length === 0) {
@@ -80,20 +103,6 @@ export class CostEstimateTableComponent {
       this.toastService.messageDescription.set(
         'No se encontraron estimaciones registradas.'
       );
-    }
-  }
-
-  setCostEstimationList() {
-    const userData = this.userService.userData();
-
-    if (userData.role === 'user') {
-      this.costEstimateService
-        .getCostEstimationsbyUser(userData._id)
-        .subscribe((data) => {
-          this.costEstimateService.costEstimationList.set(data);
-        });
-    } else {
-      this.costEstimateService.getAndSetCostEstimationList();
     }
   }
 

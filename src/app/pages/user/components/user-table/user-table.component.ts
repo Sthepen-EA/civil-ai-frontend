@@ -1,5 +1,6 @@
 import {
   Component,
+  computed,
   effect,
   EventEmitter,
   inject,
@@ -13,11 +14,17 @@ import { DeleteIconComponent } from '../../../../icons/delete-icon/delete-icon.c
 import { UserService } from '../../services/user.service';
 import { ToastService } from '../../../../services/toast.service';
 import { NgClass } from '@angular/common';
+import { SearchiconComponent } from '../../../cost-estimate/icons/searchicon/searchicon.component';
 
 @Component({
   selector: 'app-user-table',
   standalone: true,
-  imports: [EditIconComponent, DeleteIconComponent, NgClass],
+  imports: [
+    EditIconComponent,
+    DeleteIconComponent,
+    NgClass,
+    SearchiconComponent,
+  ],
   templateUrl: './user-table.component.html',
   styleUrl: './user-table.component.css',
 })
@@ -29,6 +36,7 @@ export class UserTableComponent {
   toastService = inject(ToastService);
 
   userId = '';
+  searchTerm = signal('');
 
   constructor() {
     effect(() => {
@@ -50,6 +58,18 @@ export class UserTableComponent {
       }
     });
   }
+
+  filteredUserList = computed(() => {
+    const term = this.searchTerm().toLowerCase().trim();
+
+    // if (!isNaN(Number(term))) {
+    //   return this.userList();
+    // }
+
+    return this.userList().filter((item: any) => {
+      return item.name.toLowerCase().includes(term);
+    });
+  });
 
   editItem(item: any) {
     this.changeItem.emit(item);
