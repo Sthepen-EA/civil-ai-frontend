@@ -61,6 +61,7 @@ export class CostEstimateTableComponent {
           original_prediction_object: this.itemToUpdate,
           new_prediction_object: this.itemToUpdate,
           status: 'Pendiente',
+          project_id: this.itemToUpdate.project_id,
         };
 
         this.changeRequestService.createChangeRequest(requestItem).subscribe({
@@ -88,12 +89,11 @@ export class CostEstimateTableComponent {
     //   return this.costEstimationList();
     // }
 
-    return this.costEstimationList().filter((item: any) => {
-      const { structureType, abutmentType } = item.input_list;
-
+    return this.costEstimationList().filter((item: ICostEstimate) => {
       return (
-        structureType.toLowerCase().includes(term) ||
-        abutmentType.toLowerCase().includes(term)
+        item.project_id.toLowerCase().includes(term) ||
+        item.structureTypeES.toLowerCase().includes(term) ||
+        item.abutmentTypeES.toLowerCase().includes(term)
       );
     });
   });

@@ -25,8 +25,7 @@
     <table class="w-full text-sm text-left">
       <thead class="text-xs uppercase sticky top-0 bg-white z-10">
         <tr class="hover:bg-gray-50 text-[#71717A] border-b border-gray-200">
-          <th scope="col" class="px-3 py-3">ID</th>
-          <th scope="col" class="px-3 py-3">ID de predicción</th>
+          <th scope="col" class="px-3 py-3">Proyecto</th>
           <th scope="col" class="px-3 py-3">Tipo de solicitud</th>
           <th scope="col" class="px-3 py-3">Usuario</th>
           <th scope="col" class="px-3 py-3">Fecha</th>
@@ -39,8 +38,7 @@
       <tbody>
         @for (item of filteredChangeRequests(); track $index) {
         <tr class="bg-white border-b border-gray-200 hover:bg-gray-50">
-          <td class="px-3 py-6">{{ item.id }}</td>
-          <td class="px-3 py-6">{{ item.prediction_id }}</td>
+          <td class="px-3 py-6">{{ item.project_id }}</td>
           <td class="px-3 py-6">
             <span
               class="inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold"

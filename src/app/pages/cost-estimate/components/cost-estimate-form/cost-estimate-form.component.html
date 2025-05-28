@@ -1,12 +1,12 @@
 <div
-  class="rounded-lg border bg-card text-card-foreground shadow-sm border-gray-300 p-6 relative z-20 bg-white"
+  class="relative z-20 p-6 bg-white border border-gray-300 rounded-lg shadow-sm bg-card text-card-foreground"
   data-v0-t="card"
 >
   <div class="flex flex-col space-y-1.5 mb-6">
     <h3 class="text-2xl font-semibold leading-none tracking-tight">
       Formulario de Estimación
     </h3>
-    <p class="text-sm text-muted-foreground text-gray-500 font-normal">
+    <p class="text-sm font-normal text-gray-500 text-muted-foreground">
       @if(itemToUpdate){ Complete los campos con las características del puente
       que desea actualizar. } @else { Complete los campos con las
       características del puente para obtener una estimación de costos. }
@@ -15,7 +15,7 @@
 
   <form
     [formGroup]="form"
-    class="w-full mx-auto grid grid-cols-2 grid-rows-3 gap-4"
+    class="grid w-full grid-cols-2 grid-rows-3 gap-4 mx-auto mb-2"
   >
     <div>
       <label
@@ -27,12 +27,12 @@
       <select
         formControlName="abutmentType"
         id="countries"
-        class="mb-2 mt-2 flex h-10 w-full rounded-md border font-normal border-input bg-background px-3 py-2 text-sm border-gray-200 focus-visible:ring-ring focus-visible:ring-offset-2"
+        class="flex w-full h-10 px-3 py-2 mt-2 mb-2 text-sm font-normal border border-gray-200 rounded-md border-input bg-background focus-visible:ring-ring focus-visible:ring-offset-2"
         required
       >
         <option value="" selected disabled>Seleccione una opción</option>
         @for (item of abutmentTypeList; track $index) {
-        <option value="{{ item }}">{{ item }}</option>
+        <option value="{{ item.en }}">{{ item.es }}</option>
         }
       </select>
     </div>
@@ -45,13 +45,13 @@
       <select
         formControlName="structureType"
         id="countries"
-        class="mb-2 mt-2 flex h-10 w-full font-normal rounded-md border border-input bg-background px-3 py-2 text-sm border-gray-200 focus-visible:ring-ring focus-visible:ring-offset-2"
+        class="flex w-full h-10 px-3 py-2 mt-2 mb-2 text-sm font-normal border border-gray-200 rounded-md border-input bg-background focus-visible:ring-ring focus-visible:ring-offset-2"
         required
       >
         <option value="" selected disabled>Seleccione una opción</option>
 
         @for (item of structureTypeList; track $index) {
-        <option value="{{ item }}">{{ item }}</option>
+        <option value="{{ item.en }}">{{ item.es }}</option>
         }
       </select>
     </div>
@@ -67,22 +67,37 @@
         formControlName="{{ item.name }}"
         type="number"
         id="{{ item.name }}"
-        class="mb-2 mt-2 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm border-gray-200 focus-visible:ring-ring focus-visible:ring-offset-2 font-normal"
+        class="flex w-full h-10 px-3 py-2 mt-2 mb-2 text-sm font-normal border border-gray-200 rounded-md border-input bg-background focus-visible:ring-ring focus-visible:ring-offset-2"
         required
       />
     </div>
     }
+    <div class="mb-2">
+      <label
+        for="project_id"
+        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >ID del proyecto</label
+      >
+      <input
+        formControlName="project_id"
+        type="text"
+        id="project_id"
+        placeholder="XX-XXXX-XXX-XXX"
+        class="flex w-full h-10 px-3 py-2 mt-2 mb-2 text-sm font-normal border border-gray-200 rounded-md border-input bg-background focus-visible:ring-ring focus-visible:ring-offset-2"
+        required
+      />
+    </div>
   </form>
 
   <app-close-icon
     (click)="showForm.emit(false)"
-    class="absolute top-5 right-5 cursor-pointer"
+    class="absolute cursor-pointer top-5 right-5"
   />
 
   <div class="flex flex-col gap-4" [class.reverse]="itemToUpdate">
     <button
       (click)="sendForm()"
-      class="cursor-pointer text-white rounded-md text-sm font-medium h-10 px-4 py-2 w-full"
+      class="w-full h-10 px-4 py-2 text-sm font-medium text-white rounded-md cursor-pointer"
       [ngClass]="{
         'bg-gray-900': !isCalculating,
         'bg-[#8B8B8D]': isCalculating
@@ -102,13 +117,13 @@
       <input
         formControlName="{{ form.value.total_Cost }}"
         type="text"
-        class="mb-2 mt-2 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm border-gray-200 focus-visible:ring-ring focus-visible:ring-offset-2 font-normal"
+        class="flex w-full h-10 px-3 py-2 mt-2 mb-2 text-sm font-normal border border-gray-200 rounded-md border-input bg-background focus-visible:ring-ring focus-visible:ring-offset-2"
         [value]="form.value.total_Cost | currency : 'USD' : 'symbol' : '1.2-2'"
       />
 
       }@else {
-      <div class="p-4 border rounded-lg bg-slate-50 border-gray-300">
-        <h3 class="font-medium text-sm text-muted-foreground mb-1">
+      <div class="p-4 border border-gray-300 rounded-lg bg-slate-50">
+        <h3 class="mb-1 text-sm font-medium text-muted-foreground">
           Costo Estimado:
         </h3>
         <p class="text-2xl font-bold">

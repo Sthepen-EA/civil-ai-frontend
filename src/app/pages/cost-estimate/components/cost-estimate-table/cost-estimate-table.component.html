@@ -1,5 +1,5 @@
 <div
-  class="relative overflow-x-auto shadow-md sm:rounded-lg border rounded-lg border-gray-200"
+  class="relative overflow-x-auto border border-gray-200 rounded-lg shadow-md sm:rounded-lg"
 >
   <div class="flex flex-col p-6">
     <h3 class="text-2xl font-semibold">Historial de Estimaciones</h3>
@@ -8,12 +8,12 @@
     </p>
 
     <div
-      class="flex w-full items-center px-2 mt-6 rounded-md border border-input bg-background text-gray-500"
+      class="flex items-center w-full px-2 mt-6 text-gray-500 border rounded-md border-input bg-background"
     >
       <app-searchicon />
 
       <input
-        class="flex h-10 w-full px-3 py-2 text-sm outline-none"
+        class="flex w-full h-10 px-3 py-2 text-sm outline-none"
         placeholder="Buscar en estimaciones..."
         type="search"
         value=""
@@ -24,9 +24,9 @@
 
   <div class="max-h-[57vh] overflow-y-auto">
     <table class="w-full text-sm text-left">
-      <thead class="text-xs uppercase sticky top-0 bg-white z-10">
+      <thead class="sticky top-0 z-10 text-xs uppercase bg-white">
         <tr class="hover:bg-gray-50 text-[#71717A] border-b border-gray-200">
-          <th scope="col" class="px-6 py-4">ID</th>
+          <th scope="col" class="px-6 py-4">Proyecto</th>
           <th scope="col" class="px-6 py-4">Superestructura</th>
           <th scope="col" class="px-6 py-4">Subestructura</th>
           <th scope="col" class="px-6 py-4">Tramos</th>
@@ -41,9 +41,9 @@
       <tbody>
         @for (item of filteredEstimates(); track $index) {
         <tr class="bg-white border-b border-gray-200 hover:bg-gray-50">
-          <td class="px-6 py-6">{{ item.id }}</td>
-          <td class="px-6 py-6">{{ item.input_list.structureType }}</td>
-          <td class="px-6 py-6">{{ item.input_list.abutmentType }}</td>
+          <td class="px-6 py-6">{{ item.project_id }}</td>
+          <td class="px-6 py-6">{{ item.structureTypeES }}</td>
+          <td class="px-6 py-6">{{ item.abutmentTypeES }}</td>
           <td class="px-6 py-6">{{ item.input_list.number_of_Spans }}</td>
           <td class="px-6 py-6">{{ item.input_list.total_Width }}</td>
           <td class="px-6 py-6">{{ item.input_list.total_Length }}</td>
@@ -51,16 +51,16 @@
           <th scope="row" class="px-6 py-6 font-normal">
             {{ item.total_Cost | currency : "USD" : "symbol" : "1.2-2" }}
           </th>
-          <td class="px-6 py-6 text-right flex gap-2">
+          <td class="flex gap-2 px-6 py-6 text-right">
             <button
               (click)="editItem(item)"
-              class="cursor-pointer border p-2 rounded-md border-gray-300 bg-white hover:bg-gray-100"
+              class="p-2 bg-white border border-gray-300 rounded-md cursor-pointer hover:bg-gray-100"
             >
               <app-edit-icon />
             </button>
             <button
               (click)="deleteItem(item)"
-              class="cursor-pointer border p-2 rounded-md border-gray-300 hover:bg-gray-100"
+              class="p-2 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-100"
             >
               <app-delete-icon />
             </button>
@@ -75,7 +75,7 @@
 @if(showForm) {
 
 <div
-  class="fixed w-full placeholder:text-gray-400 font-medium h-full top-0 left-0 p-10 grid place-items-center z-50"
+  class="fixed top-0 left-0 z-50 grid w-full h-full p-10 font-medium placeholder:text-gray-400 place-items-center"
 >
   <app-cost-estimate-form
     [itemToUpdate]="itemToUpdate"
@@ -83,7 +83,7 @@
   />
 
   <div
-    class="fixed w-full z-10 placeholder:text-gray-400 font-medium h-full top-0 left-0 bg-black opacity-80 cursor-pointer"
+    class="fixed top-0 left-0 z-10 w-full h-full font-medium bg-black cursor-pointer placeholder:text-gray-400 opacity-80"
     (click)="showForm = false"
   ></div>
 </div>

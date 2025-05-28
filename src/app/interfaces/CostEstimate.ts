@@ -3,6 +3,9 @@ export interface ICostEstimate {
   user_id: string;
   input_list: IInputListItem;
   total_Cost: number;
+  project_id: string;
+  abutmentTypeES: string;
+  structureTypeES: string;
 }
 
 export interface IInputListItem {

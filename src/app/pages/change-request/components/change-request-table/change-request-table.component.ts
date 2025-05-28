@@ -16,6 +16,7 @@ import { ToastService } from '../../../../services/toast.service';
 import { ChangeRequestService } from '../../services/change-request.service';
 import { UserService } from '../../../user/services/user.service';
 import { SearchiconComponent } from '../../../cost-estimate/icons/searchicon/searchicon.component';
+import { IChangeRequest } from '../../../../interfaces/ChangeRequest';
 
 @Component({
   selector: 'app-change-request-table',
@@ -58,11 +59,12 @@ export class ChangeRequestTableComponent {
     //   return this.changeRequestList();
     // }
 
-    return this.changeRequestList().filter((item: any) => {
+    return this.changeRequestList().filter((item: IChangeRequest) => {
       return (
+        item.user_name.toLowerCase().includes(term) ||
         item.request_type.toLowerCase().includes(term) ||
         item.status.toLowerCase().includes(term) ||
-        item.user_id.toLowerCase().includes(term)
+        item.project_id.toLowerCase().includes(term)
       );
     });
   });

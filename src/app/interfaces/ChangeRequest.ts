@@ -8,4 +8,5 @@ export interface IChangeRequest {
   original_prediction_object: any;
   new_prediction_object: any;
   status: string;
+  project_id: string;
 }

@@ -51,6 +51,9 @@ export class CostEstimateFormComponent {
       Validators.max(new Date().getFullYear()),
     ]),
     total_Cost: new FormControl(0),
+    project_id: new FormControl('', Validators.required),
+    abutmentTypeES: new FormControl('', Validators.required),
+    structureTypeES: new FormControl('', Validators.required),
   });
 
   atributos: any[] = [
@@ -72,55 +75,98 @@ export class CostEstimateFormComponent {
     },
   ];
 
-  structureTypeList: string[] = [
-    'adjacent box beams',
-    'adjacent slab beams',
-    'arch',
-    'bulb tee',
-    'channel beam',
-    'concrete segmental box girder',
-    'culvert',
-    'deck arches',
-    'i-beams',
-    'inverset',
-    'multi girder curved',
-    'multi girder straight',
-    'next beam',
-    'next beam type d',
-    'next beam type f',
-    'precast box curlvert',
-    'prestressed adjacent box beams',
-    'prestressed adjacent slab beams',
-    'prestressed bulb tees',
-    'prestressed l-beams',
-    'prestressed spread box beams',
-    'segmental box girder',
-    'spread box beams',
-    'steel multi girder straight',
-    'steel segmental box girder',
-    'three sided frame',
-    'through girder',
-    'through truss',
-    'truss',
+  structureTypeList: { en: string; es: string }[] = [
+    { en: 'adjacent box beams', es: 'vigas cajón adyacentes' },
+    { en: 'adjacent slab beams', es: 'vigas losa adyacentes' },
+    { en: 'arch', es: 'arco' },
+    { en: 'bulb tee', es: 'viga tipo bulb tee' },
+    { en: 'channel beam', es: 'viga canal' },
+    {
+      en: 'concrete segmental box girder',
+      es: 'viga cajón segmentada de concreto',
+    },
+    { en: 'culvert', es: 'alcantarilla' },
+    { en: 'deck arches', es: 'arcos de tablero' },
+    { en: 'i-beams', es: 'vigas tipo I' },
+    { en: 'inverset', es: 'viga inverset' },
+    { en: 'multi girder curved', es: 'vigas múltiples curvas' },
+    { en: 'multi girder straight', es: 'vigas múltiples rectas' },
+    { en: 'next beam', es: 'viga NEXT' },
+    { en: 'next beam type d', es: 'viga NEXT tipo D' },
+    { en: 'next beam type f', es: 'viga NEXT tipo F' },
+    { en: 'precast box curlvert', es: 'alcantarilla cajón prefabricada' },
+    {
+      en: 'prestressed adjacent box beams',
+      es: 'vigas cajón adyacentes pretensadas',
+    },
+    {
+      en: 'prestressed adjacent slab beams',
+      es: 'vigas losa adyacentes pretensadas',
+    },
+    { en: 'prestressed bulb tees', es: 'bulb tees pretensadas' },
+    { en: 'prestressed l-beams', es: 'vigas tipo L pretensadas' },
+    {
+      en: 'prestressed spread box beams',
+      es: 'vigas cajón separadas pretensadas',
+    },
+    { en: 'segmental box girder', es: 'viga cajón segmentada' },
+    { en: 'spread box beams', es: 'vigas cajón separadas' },
+    {
+      en: 'steel multi girder straight',
+      es: 'vigas múltiples rectas de acero',
+    },
+    { en: 'steel segmental box girder', es: 'viga cajón segmentada de acero' },
+    { en: 'three sided frame', es: 'estructura de tres lados' },
+    { en: 'through girder', es: 'viga pasante' },
+    { en: 'through truss', es: 'cercha pasante' },
+    { en: 'truss', es: 'cercha' },
   ];
 
-  abutmentTypeList: string[] = [
-    'abutmentless',
-    'cantilever stems',
-    'culvert',
-    'existing',
-    'footing only',
-    'integral',
-    'integral & gravity',
-    'invert slab',
-    'semi-integral',
-    'short stem',
-    'solid cantilever',
-    'stem',
-    'stub cantilever',
-    'stub on msess wall',
-    'other',
+  abutmentTypeList: { en: string; es: string }[] = [
+    { en: 'abutmentless', es: 'sin estribo' },
+    { en: 'cantilever stems', es: 'vástagos en voladizo' },
+    { en: 'culvert', es: 'alcantarilla' },
+    { en: 'existing', es: 'existente' },
+    { en: 'footing only', es: 'solo cimentación' },
+    { en: 'integral', es: 'integral' },
+    { en: 'integral & gravity', es: 'integral y por gravedad' },
+    { en: 'invert slab', es: 'losa inferior' },
+    { en: 'semi-integral', es: 'semi-integral' },
+    { en: 'short stem', es: 'vástago corto' },
+    { en: 'solid cantilever', es: 'voladizo sólido' },
+    { en: 'stem', es: 'vástago' },
+    { en: 'stub cantilever', es: 'voladizo tipo stub' },
+    { en: 'stub on msess wall', es: 'voladizo tipo stub sobre muro msess' },
+    { en: 'other', es: 'otro' },
   ];
+
+  ngOnInit() {
+    this.form.get('structureType')?.valueChanges.subscribe((selectedEn) => {
+      const selectedItem = this.structureTypeList.find(
+        (item) => item.en === selectedEn
+      );
+      if (selectedItem) {
+        this.form
+          .get('structureTypeES')
+          ?.setValue(selectedItem.es, { emitEvent: false });
+      } else {
+        this.form.get('structureTypeES')?.setValue('', { emitEvent: false });
+      }
+    });
+
+    this.form.get('abutmentType')?.valueChanges.subscribe((selectedEn) => {
+      const selectedItem = this.abutmentTypeList.find(
+        (item) => item.en === selectedEn
+      );
+      if (selectedItem) {
+        this.form
+          .get('abutmentTypeES')
+          ?.setValue(selectedItem.es, { emitEvent: false });
+      } else {
+        this.form.get('abutmentTypeES')?.setValue('', { emitEvent: false });
+      }
+    });
+  }
 
   ngOnChanges(): void {
     if (this.itemToUpdate) {
@@ -132,11 +178,15 @@ export class CostEstimateFormComponent {
         total_Length: this.itemToUpdate.input_list.total_Length,
         year: this.itemToUpdate.input_list.year,
         total_Cost: this.itemToUpdate.total_Cost,
+        project_id: this.itemToUpdate.project_id,
+        abutmentTypeES: this.itemToUpdate.abutmentTypeES,
+        structureTypeES: this.itemToUpdate.structureTypeES,
       });
     }
   }
 
   sendForm() {
+    console.log(this.form.value);
     if (this.form.invalid) {
       this.form.markAllAsTouched();
 
@@ -188,13 +238,20 @@ export class CostEstimateFormComponent {
             input_list: this.itemToUpdate.input_list,
             total_Cost: this.itemToUpdate.total_Cost,
             user_id: this.userService.userData()._id,
+            project_id: this.itemToUpdate.project_id,
+            abutmentTypeES: this.form.value.abutmentTypeES,
+            structureTypeES: this.form.value.structureTypeES,
           },
           new_prediction_object: {
             input_list: inputListWithoutCost,
             total_Cost: this.form.value.total_Cost,
             user_id: this.userService.userData()._id,
+            project_id: this.itemToUpdate.project_id,
+            abutmentTypeES: this.form.value.abutmentTypeES,
+            structureTypeES: this.form.value.structureTypeES,
           },
           status: 'Pendiente',
+          project_id: this.itemToUpdate.project_id,
         };
 
         this.changeRequestService.createChangeRequest(item).subscribe({
@@ -252,6 +309,9 @@ export class CostEstimateFormComponent {
         year: this.form.value.year!,
       },
       total_Cost: this.form.value.total_Cost!,
+      project_id: this.form.value.project_id!,
+      abutmentTypeES: this.form.value.abutmentTypeES!,
+      structureTypeES: this.form.value.structureTypeES!,
     };
 
     this.costEstimateService.saveCostEstimation(costEstimation).subscribe({
