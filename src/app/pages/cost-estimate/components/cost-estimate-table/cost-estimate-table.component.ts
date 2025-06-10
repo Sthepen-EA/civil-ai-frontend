@@ -109,16 +109,32 @@ export class CostEstimateTableComponent {
   }
 
   editItem(item: ICostEstimate) {
-    this.itemToUpdate = item;
-    this.showForm = true;
+    if (item.hasRequest) {
+      this.toastService.showToast.set(true);
+      this.toastService.toastType.set('toast-warning');
+      this.toastService.toastMessage.set(
+        'Ya existe una solicitud para esta estimación de costo.'
+      );
+    } else {
+      this.itemToUpdate = item;
+      this.showForm = true;
+    }
   }
 
   deleteItem(item: ICostEstimate) {
-    this.itemToUpdate = item;
-    this.toastService.messageTitle.set('Confirmación de eliminación');
-    this.toastService.messageDescription.set(
-      '¿Esta seguro que desea eliminar la estimación?'
-    );
-    this.toastService.showMessage.set(true);
+    if (item.hasRequest) {
+      this.toastService.showToast.set(true);
+      this.toastService.toastType.set('toast-warning');
+      this.toastService.toastMessage.set(
+        'Ya existe una solicitud para esta estimación de costo.'
+      );
+    } else {
+      this.itemToUpdate = item;
+      this.toastService.messageTitle.set('Confirmación de eliminación');
+      this.toastService.messageDescription.set(
+        '¿Esta seguro que desea eliminar la estimación?'
+      );
+      this.toastService.showMessage.set(true);
+    }
   }
 }

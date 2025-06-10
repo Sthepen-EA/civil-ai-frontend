@@ -6,6 +6,7 @@ export interface ICostEstimate {
   project_id: string;
   abutmentTypeES: string;
   structureTypeES: string;
+  hasRequest: boolean;
 }
 
 export interface IInputListItem {

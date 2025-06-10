@@ -29,6 +29,11 @@ export class LogInComponent {
 
   isLoading = false;
 
+  ngOnInit(): void {
+    if (this.userService.isUserLoggedIn())
+      this.route.navigate(['/estimaciones']);
+  }
+
   sendForm() {
     if (this.form.invalid) {
       const controls = this.form.controls;

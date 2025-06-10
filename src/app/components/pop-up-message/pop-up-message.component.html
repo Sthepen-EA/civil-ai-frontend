@@ -1,7 +1,7 @@
 @if(showMessage()){
-<div class="fixed w-full h-full top-0 left-0 p-10 grid place-items-center z-30">
+<div class="fixed top-0 left-0 z-30 grid w-full h-full p-10 place-items-center">
   <div
-    class="max-w-lg w-full relative z-50 rounded-lg border bg-card text-card-foreground shadow-sm border-gray-300 p-6 bg-white"
+    class="relative z-50 w-full max-w-lg p-6 bg-white border border-gray-300 rounded-lg shadow-sm bg-card text-card-foreground"
   >
     <div class="flex flex-col space-y-1.5 text-center sm:text-left">
       <h2
@@ -22,7 +22,7 @@
         Cancelar</button
       ><button
         class="cursor-pointer inline-flex hover:bg-red-400 bg-red-500 text-white items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-destructive text-destructive-foreground hover:bg-destructive/90 h-10 px-4 py-2"
-        (click)="showMessage.set(false); messageConfirmation.set(true)"
+        (click)="delete()"
       >
         Confirmar
       </button>
@@ -42,7 +42,7 @@
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
-        class="lucide lucide-x h-4 w-4"
+        class="w-4 h-4 lucide lucide-x"
       >
         <path d="M18 6 6 18"></path>
         <path d="m6 6 12 12"></path>
@@ -52,7 +52,7 @@
   </div>
 
   <div
-    class="fixed z-20 w-full h-full top-0 left-0 bg-gray-900 opacity-70 cursor-pointer"
+    class="fixed top-0 left-0 z-20 w-full h-full bg-gray-900 cursor-pointer opacity-70"
     (click)="showMessage.set(false)"
   ></div>
 </div>

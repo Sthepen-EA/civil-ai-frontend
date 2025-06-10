@@ -54,6 +54,7 @@ export class CostEstimateFormComponent {
     project_id: new FormControl('', Validators.required),
     abutmentTypeES: new FormControl('', Validators.required),
     structureTypeES: new FormControl('', Validators.required),
+    hasRequest: new FormControl(false, Validators.required),
   });
 
   atributos: any[] = [
@@ -181,6 +182,7 @@ export class CostEstimateFormComponent {
         project_id: this.itemToUpdate.project_id,
         abutmentTypeES: this.itemToUpdate.abutmentTypeES,
         structureTypeES: this.itemToUpdate.structureTypeES,
+        hasRequest: this.itemToUpdate.hasRequest,
       });
     }
   }
@@ -241,6 +243,7 @@ export class CostEstimateFormComponent {
             project_id: this.itemToUpdate.project_id,
             abutmentTypeES: this.form.value.abutmentTypeES,
             structureTypeES: this.form.value.structureTypeES,
+            hasRequest: true,
           },
           new_prediction_object: {
             input_list: inputListWithoutCost,
@@ -249,6 +252,7 @@ export class CostEstimateFormComponent {
             project_id: this.itemToUpdate.project_id,
             abutmentTypeES: this.form.value.abutmentTypeES,
             structureTypeES: this.form.value.structureTypeES,
+            hasRequest: true,
           },
           status: 'Pendiente',
           project_id: this.itemToUpdate.project_id,
@@ -262,6 +266,7 @@ export class CostEstimateFormComponent {
               'Solicitud de edición de estimación de costo creada correctamente.'
             );
             this.isCalculating = false;
+            this.showForm.emit(false);
           },
           error: (err) => {
             console.log(err);
@@ -312,6 +317,7 @@ export class CostEstimateFormComponent {
       project_id: this.form.value.project_id!,
       abutmentTypeES: this.form.value.abutmentTypeES!,
       structureTypeES: this.form.value.structureTypeES!,
+      hasRequest: this.form.value.hasRequest!,
     };
 
     this.costEstimateService.saveCostEstimation(costEstimation).subscribe({
