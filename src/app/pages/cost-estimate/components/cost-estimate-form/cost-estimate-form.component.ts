@@ -39,16 +39,22 @@ export class CostEstimateFormComponent {
     number_of_Spans: new FormControl(0, [
       Validators.required,
       Validators.min(1),
+      Validators.max(3000),
     ]),
-    total_Width: new FormControl(0, [Validators.required, Validators.min(0.1)]),
+    total_Width: new FormControl(0, [
+      Validators.required,
+      Validators.min(2),
+      Validators.max(100),
+    ]),
     total_Length: new FormControl(0, [
       Validators.required,
-      Validators.min(0.1),
+      Validators.min(6),
+      Validators.max(200000),
     ]),
     year: new FormControl(0, [
       Validators.required,
-      Validators.min(1900),
-      Validators.max(new Date().getFullYear()),
+      Validators.min(new Date().getFullYear()),
+      Validators.max(2050),
     ]),
     total_Cost: new FormControl(0),
     project_id: new FormControl('', Validators.required),
@@ -188,7 +194,6 @@ export class CostEstimateFormComponent {
   }
 
   sendForm() {
-    console.log(this.form.value);
     if (this.form.invalid) {
       this.form.markAllAsTouched();
 
@@ -204,11 +209,37 @@ export class CostEstimateFormComponent {
               `El campo "${this.getLabel(key)}" es obligatorio.`
             );
           }
-          if (errors?.['min']) {
-            this.showToastError(
-              `El campo "${this.getLabel(key)}" debe ser mayor a 0.`
-            );
+          if (errors?.['min'] || errors?.['max']) {
+            switch (key) {
+              case 'total_Width':
+                this.showToastError(
+                  'El ancho total debe estar entre 2 y 100 metros.'
+                );
+                break;
+              case 'number_of_Spans':
+                this.showToastError(
+                  'El número de tramos debe estar entre 1 y 3 000.'
+                );
+                break;
+              case 'total_Length':
+                this.showToastError(
+                  'La longitud total debe estar entre 6 y 200 000 metros.'
+                );
+                break;
+              case 'year':
+                this.showToastError(
+                  `El año debe estar entre ${new Date().getFullYear()} y 2050.`
+                );
+                break;
+              default:
+                this.showToastError(
+                  `El campo "${this.getLabel(
+                    key
+                  )}" tiene un valor fuera del rango permitido.`
+                );
+            }
           }
+
           if (errors?.['pattern']) {
             this.showToastError(
               `"${this.getLabel(key)}" tiene un formato incorrecto.`
